@@ -1,0 +1,2 @@
+# source script into terminal to get environment variable into terminal i.e. '. ./env'
+export NODE_OPTIONS=--experimental-modules
