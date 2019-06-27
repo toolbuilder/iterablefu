@@ -1,7 +1,7 @@
 import tape from 'tape'
-import FunctionalIterables from './chainable.mjs'
+import { chainable } from './chainable.mjs'
 
-const fi = FunctionalIterables.builder()
+const fi = chainable
 
 // This function remembers to call end() for each test
 const tapetest = (title, testfunction) => {
