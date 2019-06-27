@@ -1,5 +1,8 @@
 {
 	"dependencies": {
 		"tape": "^4.10.2"
+	},
+	"devDependencies": {
+		"reify": "^0.20.6"
 	}
 }

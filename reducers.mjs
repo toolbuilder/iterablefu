@@ -11,7 +11,5 @@ export default {
     }
     return accumulator
   },
-  toArray: (iterable) => {
-    return Array.from(iterable)
-  }
+  toArray: (iterable) => Array.from(iterable)
 }
