@@ -14,6 +14,7 @@ const chainable = createBuilder(Sequences, Transforms, Reducers)
 const customBuilder = function (sequences, transforms, reducers) {
   return createBuilder(sequences, transforms, reducers)
 }
+
 // add properties as starting point for users
 customBuilder.sequences = Sequences
 customBuilder.transforms = Transforms

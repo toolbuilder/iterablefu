@@ -1,8 +1,7 @@
 {
-	"dependencies": {
-		"tape": "^4.10.2"
-	},
 	"devDependencies": {
-		"reify": "^0.20.6"
+		"reify": "^0.20.6",
+		"tap-nirvana": "^1.1.0",
+		"tape": "^4.11.0"
 	}
 }

@@ -1,4 +1,4 @@
 #!/bin/bash
 # tape doesn't pick up the --experimental-modules flag from the environment
 # so here we're running with reify to get module import capability
-node_modules/.bin/tape -r reify *_test.mjs | faucet
+node_modules/.bin/tape -r reify ./*_test.mjs | tap-nirvana
