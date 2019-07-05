@@ -20,6 +20,8 @@ customBuilder.sequences = Sequences
 customBuilder.transforms = Transforms
 customBuilder.reducers = Reducers
 
+// TODO: Consider plugin pattern .useTransform, .useSequence,.useReducer, etc??
+
 export {
   chainable,
   customBuilder

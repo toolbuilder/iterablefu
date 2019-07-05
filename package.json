@@ -1,6 +1,12 @@
 {
+	"scripts": {
+		"test": "tape -r esm test/*_test.js | tap-nirvana"
+	},
+	"dependencies": {
+		"esm": "^3.2.25"
+	},
 	"devDependencies": {
-		"reify": "^0.20.6",
+		"rollup": "^1.16.6",
 		"tap-nirvana": "^1.1.0",
 		"tape": "^4.11.0"
 	}

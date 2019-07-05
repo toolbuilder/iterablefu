@@ -1,6 +1,6 @@
 import tape from 'tape'
-import Sequences from './sequences'
-import Transforms from './transforms'
+import Sequences from '../src/sequences'
+import Transforms from '../src/transforms'
 
 const isEvenNumber = x => x % 2 === 0
 const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'

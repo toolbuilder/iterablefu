@@ -1,5 +1,0 @@
-# source script into terminal to get environment variable into terminal i.e. '. ./env'
-if [ -z "$NODE_OPTIONS" ]; then
-  export NODE_OPTIONS=--experimental-modules
-  PS1="(esm) "$PS1
-fi

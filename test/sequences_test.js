@@ -1,5 +1,5 @@
 import tape from 'tape'
-import Sequences from './sequences'
+import Sequences from '../src/sequences'
 
 const makeTestRunner = (test) => (parameters) => {
   let [testName, inputIterable, expectedOutput] = parameters

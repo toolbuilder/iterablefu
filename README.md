@@ -1,5 +1,43 @@
 # Iterator Functions
 
+###############
+Files in module:
+index.js // transpiled CommonJS code for old nodejs
+index.mjs // es6 module syntax
+and in package.json:
+
+{
+  "main": "index"
+}
+
+If node is launched with --experimental-modules flag, it would use *.mjs file, otherwise *.js.
+
+A package.json from in the wild:
+package.json
+  "main": "lib/index",
+  "browser": "./browser.js",
+  "module": "lib/index.mjs",
+  "files": [
+    "lib/index.js",
+    "lib/index.mjs",
+    "lib/index.es.js",
+    "browser.js"
+  ],
+  "engines": {
+    "node": "4.x || >=6.0.0"
+  },
+
+
+
+#######################
+
+tape -r esm testfile.mjs
+// Doesn't work because tape is using require, not import to load testfile.mjs. Esm sees this, and since
+// it violates node's loader policy, esm throws an error. Rename testfile.mjs to testfile.js and it will work
+
+##############
+With source/tests: "test": "cross-env NODE_PATH='source' node source/test/index.js"
+
 higher order functions (such as map, filter, and reduce) for ECMAScript 6 iterators. 
 wrapper for JavaScript Generators
 

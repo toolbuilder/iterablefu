@@ -1,8 +1,8 @@
 import tape from 'tape'
-import { chainable, customBuilder } from './chainable.mjs'
-import sequences from './sequences'
-import transforms from './transforms'
-import reducers from './reducers'
+import { chainable, customBuilder } from '../src/chainable'
+import sequences from '../src/sequences'
+import transforms from '../src/transforms'
+import reducers from '../src/reducers'
 
 const makeTestRunner = (test) => (parameters) => {
   let { name, actual, expected } = parameters
