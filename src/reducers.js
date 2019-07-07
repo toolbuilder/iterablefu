@@ -1,15 +1,14 @@
-export default {
-  forEach: (fn, iterable) => {
-    for (let item of iterable) {
-      fn(item)
-    }
-  },
-  // fn(accumulator, item), returns accumulator
-  reduce: (fn, accumulator, iterable) => {
-    for (let item of iterable) {
-      accumulator = fn(accumulator, item)
-    }
-    return accumulator
-  },
-  toArray: (iterable) => Array.from(iterable)
+export const forEach = (fn, iterable) => {
+  for (let item of iterable) {
+    fn(item)
+  }
 }
+
+export const reduce = (fn, accumulator, iterable) => {
+  for (let item of iterable) {
+    accumulator = fn(accumulator, item)
+  }
+  return accumulator
+}
+
+export const toArray = (iterable) => Array.from(iterable)

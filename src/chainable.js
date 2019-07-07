@@ -1,7 +1,7 @@
 import createBuilder from './chainable_factory'
-import Sequences from './sequences'
-import Transforms from './transforms'
-import Reducers from './reducers'
+import * as Sequences from './sequences'
+import * as Transforms from './transforms'
+import * as Reducers from './reducers'
 
 /**
  * Create an easy default chainable iterator builder.

@@ -13,13 +13,9 @@
  * @example
  * const transforms = {
  *   // any number of parameters are allowed, but the last must be an iterable
- *   map: (fn, iterable) => {
- *     return {
- *       * [Symbol.iterator] () {
- *         for (let value of iterable) {
- *            yield fn(value)
- *         }
- *       }
+ *   map: function * (fn, iterable) {
+ *     for (let value of iterable) {
+ *        yield fn(value)
  *     }
  *   }
  * }
@@ -40,8 +36,8 @@ const createChainableIterable = (transforms, reducers) => {
     constructor (iterable) {
       this.chainedIterable = iterable
     }
-    [Symbol.iterator] () {
-      return this.chainedIterable[Symbol.iterator]()
+    * [Symbol.iterator] () {
+      yield * this.chainedIterable
     }
   }
 

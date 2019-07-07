@@ -1,4 +1,5 @@
 
+import { zipAll } from './sequences'
 const isString = (item) => typeof item === 'string' || item instanceof String
 const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
 
@@ -10,135 +11,103 @@ const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
  * but 'this' refers to the chainable iterable instance, not the export object.
  * Therefore, to use flatten in a custom chainable, flattenPerFunction also had
  * to be added. It's not obvious that's the case from a user perspective.
+ * @private
  */
-const dependable = {
-  filter: (fn, iterable) => {
-    return {
-      * [Symbol.iterator] () {
-        for (let value of iterable) {
-          if (fn(value) === true) {
-            yield value
-          }
-        }
-      }
+
+export const filter = function * (fn, iterable) {
+  for (let value of iterable) {
+    if (fn(value) === true) {
+      yield value
     }
-  },
-  flattenPerFunction: (fn, iterable) => {
-    return {
-      * [Symbol.iterator] () {
-        for (let value of iterable) {
-          const { iterate, itemToYield } = fn(value)
-          if (iterate) {
-            yield * itemToYield
-          } else {
-            yield itemToYield
-          }
-        }
-      }
-    }
-  },
-  map: (fn, iterable) => {
-    return {
-      * [Symbol.iterator] () {
-        for (let value of iterable) {
-          yield fn(value)
-        }
-      }
+  }
+}
+export const flattenPerFunction = function * (fn, iterable) {
+  for (let value of iterable) {
+    const { iterate, itemToYield } = fn(value)
+    if (iterate) {
+      yield * itemToYield
+    } else {
+      yield itemToYield
     }
   }
 }
 
-export default {
-  arrayToObject: function (propertyNamesInArrayOrder, iterable) {
-    let fn = (array) => {
-      const outputObject = {}
-      const length = array === undefined ? 0 : array.length
-      for (let i = 0; i < propertyNamesInArrayOrder.length; i++) {
-        outputObject[propertyNamesInArrayOrder[i]] = (i < length) ? array[i] : undefined
-      }
-      return outputObject
-    }
-    return dependable.map(fn, iterable)
-  },
-  chunk: (n, iterable) => {
-    return {
-      * [Symbol.iterator] () {
-        let accumulator = []
-        for (let item of iterable) {
-          accumulator.push(item)
-          if (accumulator.length === n) {
-            yield accumulator
-            accumulator = []
-          }
-        }
-        if (accumulator.length > 0) {
-          yield accumulator
-        }
-      }
-    }
-  },
-  filter: (fn, iterable) => {
-    return dependable.filter(fn, iterable)
-  },
-  flatten: function (iterable) {
-    const notStringsAndNotRecursive = (item) => {
-      if (!isString(item) && isIterable(item)) {
-        return { iterate: true, itemToYield: item }
-      }
-      return { iterate: false, itemToYield: item }
-    }
-    return dependable.flattenPerFunction(notStringsAndNotRecursive, iterable)
-  },
-  flattenRecursive: function (iterable) {
-    const notStringsAndRecursive = (item) => {
-      if (!isString(item) && isIterable(item)) {
-        return { iterate: true, itemToYield: this.flattenPerFunction(notStringsAndRecursive, item) }
-      }
-      return { iterate: false, itemToYield: item }
-    }
-    return dependable.flattenPerFunction(notStringsAndRecursive, iterable)
-  },
-  flattenPerFunction: (fn, iterable) => {
-    return dependable.flattenPerFunction(fn, iterable)
-  },
-  map: (fn, iterable) => {
-    return dependable.map(fn, iterable)
-  },
-  pluck (propertyname, iterable) {
-    return dependable.map(x => x[propertyname], iterable)
-  },
-  nth (index, iterable) {
-    return dependable.map(x => (index < 0) ? x[x.length + index] : x[index], iterable)
-  },
-  reject (fn, iterable) {
-    return dependable.filter(x => fn(x) !== true, iterable)
-  },
-  take: (n, iterable) => {
-    return {
-      * [Symbol.iterator] () {
-        const iterator = iterable[Symbol.iterator]()
-        let taken = 0
-        let next
-        while (taken < n) {
-          next = iterator.next()
-          taken += 1
-          if (next.done === true) break
-          yield next.value
-        }
-      }
-    }
-  },
-  takeWhile: (fn, iterable) => {
-    return {
-      * [Symbol.iterator] () {
-        for (let item of iterable) {
-          if (fn(item) !== true) break
-          yield item
-        }
-      }
-    }
-  },
-  tap (fn, iterable) {
-    return dependable.map(x => { fn(x); return x }, iterable)
+export const map = function * (fn, iterable) {
+  for (let value of iterable) {
+    yield fn(value)
   }
+}
+
+export const arrayToObject = function (propertyNames, iterable) {
+  let fn = (iterableElement) => {
+    const outputObject = {}
+    const pairs = zipAll(propertyNames, iterableElement)
+    for (let [ propertyName, value ] of pairs) {
+      if (propertyName === undefined) continue
+      outputObject[propertyName] = value
+    }
+    return outputObject
+  }
+  // implement arrayToObject in terms of map
+  return map(fn, iterable)
+}
+export const chunk = function * (n, iterable) {
+  let accumulator = []
+  for (let item of iterable) {
+    accumulator.push(item)
+    if (accumulator.length === n) {
+      yield accumulator
+      accumulator = []
+    }
+  }
+  if (accumulator.length > 0) {
+    yield accumulator
+  }
+}
+export const flatten = function (iterable) {
+  const notStringsAndNotRecursive = (item) => {
+    if (!isString(item) && isIterable(item)) {
+      return { iterate: true, itemToYield: item }
+    }
+    return { iterate: false, itemToYield: item }
+  }
+  return flattenPerFunction(notStringsAndNotRecursive, iterable)
+}
+export const flattenRecursive = function (iterable) {
+  const notStringsAndRecursive = (item) => {
+    if (!isString(item) && isIterable(item)) {
+      return { iterate: true, itemToYield: this.flattenPerFunction(notStringsAndRecursive, item) }
+    }
+    return { iterate: false, itemToYield: item }
+  }
+  return flattenPerFunction(notStringsAndRecursive, iterable)
+}
+export const pluck = (propertyname, iterable) => {
+  return map(x => x[propertyname], iterable)
+}
+export const nth = (index, iterable) => {
+  return map(x => (index < 0) ? x[x.length + index] : x[index], iterable)
+}
+export const reject = (fn, iterable) => {
+  return filter(x => fn(x) !== true, iterable)
+}
+export const take = function * (n, iterable) {
+  const iterator = iterable[Symbol.iterator]()
+  let taken = 0
+  let next
+  while (taken < n) {
+    next = iterator.next()
+    taken += 1
+    if (next.done === true) break
+    yield next.value
+  }
+}
+export const takeWhile = function * (fn, iterable) {
+  for (let item of iterable) {
+    if (fn(item) !== true) break
+    yield item
+  }
+}
+export const tap = (fn, iterable) => {
+  return map(x => { fn(x); return x }, iterable)
 }

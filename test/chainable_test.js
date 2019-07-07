@@ -1,8 +1,8 @@
 import tape from 'tape'
 import { chainable, customBuilder } from '../src/chainable'
-import sequences from '../src/sequences'
-import transforms from '../src/transforms'
-import reducers from '../src/reducers'
+import * as sequences from '../src/sequences'
+import * as transforms from '../src/transforms'
+import * as reducers from '../src/reducers'
 
 const makeTestRunner = (test) => (parameters) => {
   let { name, actual, expected } = parameters
@@ -30,6 +30,16 @@ tape('chainable', test => {
       expected: true
     }
   ].forEach(makeTestRunner(test))
+
+  // simple generator to test with, copied from MDN
+  function * makeRangeIterator (start = 0, end = 10, step = 1) {
+    for (let i = start; i < end; i += step) {
+      yield i
+    }
+  }
+
+  test.deepEqual([...chainable(makeRangeIterator(0, 5))], [0, 1, 2, 3, 4], 'chainable works with iterators')
+
   test.end()
 })
 

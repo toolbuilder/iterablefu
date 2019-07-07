@@ -1,13 +1,31 @@
 {
-	"scripts": {
-		"test": "tape -r esm test/*_test.js | tap-nirvana"
-	},
-	"dependencies": {
-		"esm": "^3.2.25"
-	},
-	"devDependencies": {
-		"rollup": "^1.16.6",
-		"tap-nirvana": "^1.1.0",
-		"tape": "^4.11.0"
-	}
+  "dependencies": {
+    "esm": "^3.2.25"
+  },
+  "description": "Extendable, chainable transforms like map, reduce, filter, zip, chain, etc., for iterable objects.",
+  "devDependencies": {
+    "rollup": "^1.16.6",
+    "tap-nirvana": "^1.1.0",
+    "tape": "^4.11.0",
+    "update-markdown-jsdoc": "^1.0.11"
+  },
+  "files": [
+    "src",
+    "index.js"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "iterable",
+    "iterator",
+    "chainable",
+    "esm",
+    "functional"
+  ],
+  "main": "index.js",
+  "module": "src/chainable.js",
+  "name": "iterablefu",
+  "scripts": {
+    "test": "tape -r esm test/*_test.js | tap-nirvana"
+  },
+  "version": "0.1.0"
 }

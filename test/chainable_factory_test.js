@@ -1,8 +1,8 @@
 import tape from 'tape'
 import chainableFactory from '../src/chainable_factory'
-import Sequences from '../src/sequences'
-import Transforms from '../src/transforms'
-import Reducers from '../src/reducers'
+import * as Sequences from '../src/sequences'
+import * as Transforms from '../src/transforms'
+import * as Reducers from '../src/reducers'
 
 // Create some shortened sets of sequences, transforms, and reducers
 // to simplify testing.

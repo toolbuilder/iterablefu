@@ -1,6 +1,6 @@
 import tape from 'tape'
-import Sequences from '../src/sequences'
-import Transforms from '../src/transforms'
+import * as Sequences from '../src/sequences'
+import * as Transforms from '../src/transforms'
 
 const isEvenNumber = x => x % 2 === 0
 const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
@@ -49,18 +49,6 @@ tape('arrayToObject', test => {
       factory.arrayToObject(['name', 'age']),
       [
         { 'name': 'George', 'age': 22 },
-        { 'name': 'Betty', 'age': 18 },
-        { 'name': 'Grandpa', 'age': 89 },
-        { 'name': 'Sally', 'age': 42 }
-      ]
-    ],
-    [
-      'all properties are set to undefined if array is undefined ',
-      [['George', 22], undefined, ['Betty', 18], ['Grandpa', 89], ['Sally', 42]],
-      factory.arrayToObject(['name', 'age']),
-      [
-        { 'name': 'George', 'age': 22 },
-        { 'name': undefined, 'age': undefined },
         { 'name': 'Betty', 'age': 18 },
         { 'name': 'Grandpa', 'age': 89 },
         { 'name': 'Sally', 'age': 42 }
