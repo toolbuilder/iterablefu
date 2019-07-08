@@ -2,12 +2,11 @@
   "dependencies": {
     "esm": "^3.2.25"
   },
-  "description": "Extendable, chainable transforms like map, reduce, filter, zip, chain, etc., for iterable objects.",
+  "description": "Customizable, chainable, transforms like map, reduce, filter, zip, chain, etc., for iterable objects.",
   "devDependencies": {
     "rollup": "^1.16.6",
     "tap-nirvana": "^1.1.0",
-    "tape": "^4.11.0",
-    "update-markdown-jsdoc": "^1.0.11"
+    "tape": "^4.11.0"
   },
   "files": [
     "src",
@@ -19,7 +18,8 @@
     "iterator",
     "chainable",
     "esm",
-    "functional"
+    "functional",
+    "tree-shaking"
   ],
   "main": "index.js",
   "module": "src/chainable.js",

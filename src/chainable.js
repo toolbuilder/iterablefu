@@ -1,28 +1,20 @@
-import createBuilder from './chainable_factory'
-import * as Sequences from './sequences'
-import * as Transforms from './transforms'
-import * as Reducers from './reducers'
+import { makeChainableIterable, makeChainableClass } from './makechainable.js'
+import * as sequences from './sequences.js'
+import * as transforms from './transforms.js'
+import * as reducers from './reducers.js'
 
-/**
- * Create an easy default chainable iterator builder.
- */
-const chainable = createBuilder(Sequences, Transforms, Reducers)
-/**
- * Support easy customization by providing a builder function, and
- * the standard set of sequences, transforms, and reducers.
-*/
-const customBuilder = function (sequences, transforms, reducers) {
-  return createBuilder(sequences, transforms, reducers)
-}
+// Create an easy default chainable iterator builder for common use case
+const chainable = makeChainableIterable(sequences, transforms, reducers)
+const ChainableIterable = chainable.ChainableIterable
 
-// add properties as starting point for users
-customBuilder.sequences = Sequences
-customBuilder.transforms = Transforms
-customBuilder.reducers = Reducers
-
-// TODO: Consider plugin pattern .useTransform, .useSequence,.useReducer, etc??
-
+// Everything has been imported and used (visibly or not) to build chainable
+// Therefore export everything for convenience.
 export {
   chainable,
-  customBuilder
+  ChainableIterable,
+  makeChainableClass,
+  makeChainableIterable,
+  sequences,
+  transforms,
+  reducers
 }

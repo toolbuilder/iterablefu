@@ -1,15 +1,15 @@
 import tape from 'tape'
-import * as Sequences from '../src/sequences'
-import * as Transforms from '../src/transforms'
+import * as sequences from '../src/sequences.js'
+import * as transforms from '../src/transforms.js'
 
 const isEvenNumber = x => x % 2 === 0
 const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
 
-// Dynamically create factory methods for each transform to make test data cleaner.
-// Each factory method has the same name as the associated factory
-const factory = {}
-for (let methodName in Transforms) {
-  factory[methodName] = (...args) => (iterable) => Transforms[methodName](...args, iterable)
+// The last parameter of all transforms is 'iterable'.
+// Effectively curry the transforms to make test parameters vs input iterable clearer
+const curried = {}
+for (let methodName in transforms) {
+  curried[methodName] = (...args) => (iterable) => transforms[methodName](...args, iterable)
 }
 
 const makeTestRunner = (test) => (parameters) => {
@@ -20,11 +20,11 @@ const makeTestRunner = (test) => (parameters) => {
 
 tape('arrayToObject', test => {
   [
-    // format: [testName, inputIterable, iterableFactory, expectedOutput]
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'converts sequence of arrays to sequence of objects',
       [['George', 22], ['Betty', 18], ['Grandpa', 89], ['Sally', 42]],
-      factory.arrayToObject(['name', 'age']),
+      curried.arrayToObject(['name', 'age']),
       [
         { 'name': 'George', 'age': 22 },
         { 'name': 'Betty', 'age': 18 },
@@ -35,7 +35,7 @@ tape('arrayToObject', test => {
     [
       'properties with no matching array element are set to undefined',
       [['George'], ['Betty', 18], ['Grandpa'], ['Sally', 42]],
-      factory.arrayToObject(['name', 'age']),
+      curried.arrayToObject(['name', 'age']),
       [
         { 'name': 'George', 'age': undefined },
         { 'name': 'Betty', 'age': 18 },
@@ -46,7 +46,7 @@ tape('arrayToObject', test => {
     [
       'arrays with no matching property are ignored',
       [['George', 22, 45], ['Betty', 18, 63], ['Grandpa', 89], ['Sally', 42]],
-      factory.arrayToObject(['name', 'age']),
+      curried.arrayToObject(['name', 'age']),
       [
         { 'name': 'George', 'age': 22 },
         { 'name': 'Betty', 'age': 18 },
@@ -60,22 +60,23 @@ tape('arrayToObject', test => {
 
 tape('chunk', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'can generate all full length chunks',
-      Sequences.range(12),
-      factory.chunk(3),
+      sequences.range(12),
+      curried.chunk(3),
       [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]
     ],
     [
       'can generate partial chunk at end',
-      Sequences.range(13),
-      factory.chunk(3),
+      sequences.range(13),
+      curried.chunk(3),
       [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12]]
     ],
     [
       'empty input iterable outputs no chunks',
       [],
-      factory.chunk(3),
+      curried.chunk(3),
       []
     ]
   ].forEach(makeTestRunner(test))
@@ -84,16 +85,17 @@ tape('chunk', test => {
 
 tape('filter', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'removes elements from sequence when function returns !truthy',
-      Sequences.range(10),
-      factory.filter(isEvenNumber),
-      Array.from(Sequences.range(0, 5, 2))
+      sequences.range(10),
+      curried.filter(isEvenNumber),
+      Array.from(sequences.range(0, 5, 2))
     ],
     [
       'passes all elements when function only returns truthy values',
-      Sequences.range(10),
-      factory.filter(x => true),
+      sequences.range(10),
+      curried.filter(x => true),
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     ]
   ].forEach(makeTestRunner(test))
@@ -102,16 +104,17 @@ tape('filter', test => {
 
 tape('flatten', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'does not recurse',
       [0, [1, 2, 3], [4, 5, 6], [['a', 'b'], 7], 8, 9],
-      factory.flatten(),
+      curried.flatten(),
       [0, 1, 2, 3, 4, 5, 6, ['a', 'b'], 7, 8, 9]
     ],
     [
       'does not flatten strings',
       ['Chainable', 'Iterable', 'Sequence', 'Generator', 'Transform'],
-      factory.flatten(),
+      curried.flatten(),
       ['Chainable', 'Iterable', 'Sequence', 'Generator', 'Transform']
     ]
   ].forEach(makeTestRunner(test))
@@ -120,11 +123,12 @@ tape('flatten', test => {
 
 tape('flattenPerFunction', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'uses function to determine yield value, and whether to iterate it',
       [0, [1, 2, 3], [4, 5, 6], [['a', 'b'], 7], 8, 9],
       // this is a simplified version of flatten that will flatten strings
-      factory.flattenPerFunction(x => ({ iterate: isIterable(x), itemToYield: x })),
+      curried.flattenPerFunction(x => ({ iterate: isIterable(x), itemToYield: x })),
       [0, 1, 2, 3, 4, 5, 6, ['a', 'b'], 7, 8, 9]
     ]
   ].forEach(makeTestRunner(test))
@@ -133,16 +137,17 @@ tape('flattenPerFunction', test => {
 
 tape('flattenRecursive', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'recursively flattens iterable',
       [0, [1, 2, 3], [[4, 5], [[[6, 7]], [8, 9], 10]], 11, 12],
-      factory.flattenRecursive(),
-      Array.from(Sequences.range(13))
+      curried.flattenRecursive(),
+      Array.from(sequences.range(13))
     ],
     [
       'does not flatten strings',
       ['Chainable', ['Iterable', ['Sequence', 'Generator']], String('Transform')],
-      factory.flattenRecursive(),
+      curried.flattenRecursive(),
       ['Chainable', 'Iterable', 'Sequence', 'Generator', 'Transform']
     ]
   ].forEach(makeTestRunner(test))
@@ -151,10 +156,11 @@ tape('flattenRecursive', test => {
 
 tape('map', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'generates each output value using provided function',
-      Sequences.range(5),
-      factory.map(x => 3 * x),
+      sequences.range(5),
+      curried.map(x => 3 * x),
       [0, 3, 6, 9, 12]
     ]
   ].forEach(makeTestRunner(test))
@@ -163,18 +169,19 @@ tape('map', test => {
 
 tape('pluck', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'yields specified property from each object',
-      Transforms.arrayToObject(['named', 'numbered'],
-        Sequences.zip(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5])),
-      factory.pluck('named'),
+      transforms.arrayToObject(['named', 'numbered'],
+        sequences.zip(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5])),
+      curried.pluck('named'),
       ['able', 'better', 'chainable', 'dictionary', 'enhanced']
     ],
     [
       'returns undefined when property is undefined',
-      Transforms.arrayToObject(['named', 'numbered'],
-        Sequences.zipAll(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5, 6])),
-      factory.pluck('named'),
+      transforms.arrayToObject(['named', 'numbered'],
+        sequences.zipAll(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5, 6])),
+      curried.pluck('named'),
       ['able', 'better', 'chainable', 'dictionary', 'enhanced', undefined]
     ]
   ].forEach(makeTestRunner(test))
@@ -183,17 +190,18 @@ tape('pluck', test => {
 
 tape('nth', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'positive index returns that element of the array',
-      Sequences.zip(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5], [6, 7, 8, 9, 10]),
-      factory.nth(1),
-      Array.from(Sequences.range(1, 5))
+      sequences.zip(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5], [6, 7, 8, 9, 10]),
+      curried.nth(1),
+      Array.from(sequences.range(1, 5))
     ],
     [
       'negative index returns values from the end, -1 returns the last value',
-      Sequences.zip(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5], [6, 7, 8, 9, 10]),
-      factory.nth(-1),
-      Array.from(Sequences.range(6, 5))
+      sequences.zip(['able', 'better', 'chainable', 'dictionary', 'enhanced'], [1, 2, 3, 4, 5], [6, 7, 8, 9, 10]),
+      curried.nth(-1),
+      Array.from(sequences.range(6, 5))
     ]
   ].forEach(makeTestRunner(test))
   test.end()
@@ -201,10 +209,11 @@ tape('nth', test => {
 
 tape('reject', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'removes elements when function returns truthy',
-      Sequences.range(10),
-      factory.reject(isEvenNumber),
+      sequences.range(10),
+      curried.reject(isEvenNumber),
       [1, 3, 5, 7, 9]
     ]
   ].forEach(makeTestRunner(test))
@@ -213,11 +222,12 @@ tape('reject', test => {
 
 tape('take', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'returns the first n elements of iterable',
-      Sequences.range(10),
-      factory.take(5),
-      Array.from(Sequences.range(5))
+      sequences.range(10),
+      curried.take(5),
+      Array.from(sequences.range(5))
     ]
   ].forEach(makeTestRunner(test))
   test.end()
@@ -225,11 +235,12 @@ tape('take', test => {
 
 tape('takeWhile', test => {
   [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
     [
       'returns elements until function returns !truthy, then stops',
-      Sequences.range(10),
-      factory.takeWhile(x => x !== 5),
-      Array.from(Sequences.range(5))
+      sequences.range(10),
+      curried.takeWhile(x => x !== 5),
+      Array.from(sequences.range(5))
     ]
   ].forEach(makeTestRunner(test))
   test.end()
@@ -237,8 +248,8 @@ tape('takeWhile', test => {
 
 tape('tap', test => {
   const accumulator = []
-  const inputSequence = Sequences.range(10)
-  const iterable = Transforms.tap(x => accumulator.push(2 * x), inputSequence)
+  const inputSequence = sequences.range(10)
+  const iterable = transforms.tap(x => accumulator.push(2 * x), inputSequence)
   test.deepEqual(Array.from(iterable), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 'does not modify sequence')
   test.deepEqual(accumulator, [0, 2, 4, 6, 8, 10, 12, 14, 16, 18], 'executes function for each element')
   test.end()

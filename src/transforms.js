@@ -1,43 +1,22 @@
 
-import { zipAll } from './sequences'
-const isString = (item) => typeof item === 'string' || item instanceof String
-const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
+import { zipAll } from './sequences.js'
 
 /**
- * The dependable object eliminates dependency surprises on downstream users.
+ * Converts a sequence of Arrays to a sequence of Objects by assigning the property names
+ * to each array element in turn. The input sequence doesn't have to provide arrays, it can
+ * provide any sequence of iterable objects.
  *
- * These are iterable factories that are used by other functions in the
- * default export object. Using 'this' in that object works perfectly fine,
- * but 'this' refers to the chainable iterable instance, not the export object.
- * Therefore, to use flatten in a custom chainable, flattenPerFunction also had
- * to be added. It's not obvious that's the case from a user perspective.
- * @private
+ * If the arrays are too long, extra values are ignored.
+ *
+ * If the arrays are too short, the remaining properties are assigned undefined.
+ *
+ * @param {Iterable} propertyNames - a sequence of property names
+ * @param {Iterable} iterable - a sequence of arrays (or any iterable objects)
+ * @return {Generator} - a sequence of objects
+ * @example
+ * const objects = arrayToObject(['a', 'b'], [[0, 1], [2, 3, 'a'], [4]])
+ * // objects is [{'a': 0, 'b': 1 }, {'a': 2, 'b': 3 }, {'a': 4, 'b': undefined }]
  */
-
-export const filter = function * (fn, iterable) {
-  for (let value of iterable) {
-    if (fn(value) === true) {
-      yield value
-    }
-  }
-}
-export const flattenPerFunction = function * (fn, iterable) {
-  for (let value of iterable) {
-    const { iterate, itemToYield } = fn(value)
-    if (iterate) {
-      yield * itemToYield
-    } else {
-      yield itemToYield
-    }
-  }
-}
-
-export const map = function * (fn, iterable) {
-  for (let value of iterable) {
-    yield fn(value)
-  }
-}
-
 export const arrayToObject = function (propertyNames, iterable) {
   let fn = (iterableElement) => {
     const outputObject = {}
@@ -51,6 +30,17 @@ export const arrayToObject = function (propertyNames, iterable) {
   // implement arrayToObject in terms of map
   return map(fn, iterable)
 }
+
+/**
+ * Chunk every n items into an array, and output that array in the output sequence.
+ *
+ * @param {number} n - the number of items to group into each array.
+ * @param {Iterable} iterable - the sequence of items to group
+ * @return {Generator} - a sequence of grouped items
+ * @example
+ * const a = chunk(2, [0, 1, 2, 3, 4, 5, 6])
+ * console.log([...a]) // prints [[0, 1], [2, 3], [4, 5], [6]]
+ */
 export const chunk = function * (n, iterable) {
   let accumulator = []
   for (let item of iterable) {
@@ -64,6 +54,43 @@ export const chunk = function * (n, iterable) {
     yield accumulator
   }
 }
+
+/**
+ * Keeps item from input sequence when fn(item) returns truty. Remove items from input sequence when
+ * fn(item) returns !truthy.
+ *
+ * @param {Function} fn - fn(item) returns truthy when item should be removed
+ * @param {Iterable} iterable - the sequence to filter
+ * @return {Generator} - the filtered sequence
+ * @example
+ * const isEvenNumber = x => x % 2 === 0
+ * const a = filter(isEvenNumber, [0, 1, 2, 3, 4, 5, 6])
+ * console.log([...a]) // prints even numbers [0, 2, 4, 6]
+ */
+export const filter = function * (fn, iterable) {
+  for (let value of iterable) {
+    if (fn(value) === true) {
+      yield value
+    }
+  }
+}
+
+// These two functions are used by flatten and flattenRecursive.
+// Generally accepted method of checking if something is a string.
+const isString = (item) => typeof item === 'string' || item instanceof String
+// Generally accepted method of checking if something supports the Iterable protocol
+const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
+
+/**
+ * Flattens a sequence of items one level deep. It does not flatten strings, even
+ * though they are iterable. Use FlattenPerFunction if you want to flatten strings.
+ *
+ * @param {Iterable} iterable - the iterable sequence to flatten
+ * @returns {Generator} - the flattened sequence
+ * @example
+ * const a = flatten([[0, 1], [2, 3], [4, 5], [6]])
+ * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6]
+ */
 export const flatten = function (iterable) {
   const notStringsAndNotRecursive = (item) => {
     if (!isString(item) && isIterable(item)) {
@@ -73,6 +100,43 @@ export const flatten = function (iterable) {
   }
   return flattenPerFunction(notStringsAndNotRecursive, iterable)
 }
+
+/**
+ * Flattens an input sequence as guided by the fn(item) return value. Both flatten and
+ * flattenRecursive provide examples for using this function.
+ *
+ * @param {Function} fn - fn(item) returns Object, {iterate: true // or false, itemToYield: func(item) }
+ * @param {Iterable} iterable - the sequence to flatten
+ * @returns {Generator} - the flattened sequence
+ * @example
+ * // this example flattens any iterable, including strings, one level deep
+ * const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
+ * const input = [0, [1, 2, 3], [4, 5, 6], [['a', 'b'], 7], 8, 9]
+ * const a = flattenPerFunction(x => ({ iterate: isIterable(x), itemToYield: x }), input)
+ * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, ['a', 'b'], 7, 8, 9]
+ *
+ */
+export const flattenPerFunction = function * (fn, iterable) {
+  for (let value of iterable) {
+    const { iterate, itemToYield } = fn(value)
+    if (iterate) {
+      yield * itemToYield
+    } else {
+      yield itemToYield
+    }
+  }
+}
+
+/**
+ * Flattens a sequence recursively. Does not flatten strings even though they are iterable.
+ *
+ * @param {Iterable} iterable - the sequence to flatten
+ * @returns {Generator} - the flattened sequence
+ * @example
+ * const input = [0, [1, 2, 3], [[4, 5], [[[6, 7]], [8, 9], 10]], 11, 12],
+ * const a = flattenRecursive(input)
+ * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+ */
 export const flattenRecursive = function (iterable) {
   const notStringsAndRecursive = (item) => {
     if (!isString(item) && isIterable(item)) {
@@ -82,15 +146,78 @@ export const flattenRecursive = function (iterable) {
   }
   return flattenPerFunction(notStringsAndRecursive, iterable)
 }
-export const pluck = (propertyname, iterable) => {
-  return map(x => x[propertyname], iterable)
+
+/**
+ * Generates a sequence of items by calling fn(item) for each item.
+ *
+ * @param {Function} fn - fn(item) returns the output item
+ * @param {Iterable} iterable - the sequence to map
+ * @returns {Generator} - the mapped sequence
+ * @example
+ * const a = map(x => 2 * x, [0, 1, 2, 3])
+ * console.log([...a]) // prints [0, 2, 4, 6]
+ */
+export const map = function * (fn, iterable) {
+  for (let value of iterable) {
+    yield fn(value)
+  }
 }
+
+/**
+ * Given a sequence of Arrays, output the nth element of each array as a sequence.
+ *
+ * @param {number} index - the index of the Array to output
+ * @param {Iterable} iterable - the iterable to process
+ * @returns {Generator} - the mapped iterable
+ * @example
+ * const input = [[0, 1], [2, 3], [4, 5]]
+ * const a = nth(1, input)
+ * console.log([...a]) // prints [1, 3, 5]
+ */
 export const nth = (index, iterable) => {
   return map(x => (index < 0) ? x[x.length + index] : x[index], iterable)
 }
+
+/**
+ * Given a sequence of Objects, output the specified property of each Object as a sequence.
+ *
+ * @param {string} propertyname - the property to extract from each Object
+ * @param {Iterable} iterable - the input sequence of Objects
+ * @returns {Generator} - the output sequence
+ * @example
+ * const input = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
+ * const a = pluck('a', input)
+ * console.log([...a]) // prints [1, 3, 5]
+ */
+export const pluck = (propertyname, iterable) => {
+  return map(x => x[propertyname], iterable)
+}
+
+/**
+ * Reject items when fn(item) returns truthy.
+ *
+ * @param {Function} fn - fn(item) returns truthy when item should be removed from output sequence
+ * @param {Iterable} iterable - input sequence
+ * @returns {Generator} - filtered output sequence
+ * @example
+ * const isEvenNumber = x => x % 2 === 0
+ * const a = reject(isEvenNumber, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+ * console.log([...a]) // prints [1, 3, 5, 7, 9]
+ */
 export const reject = (fn, iterable) => {
   return filter(x => fn(x) !== true, iterable)
 }
+
+/**
+ * Create an output sequence that is the first n items of the input sequence.
+ *
+ * @param {number} n - the number of items to take
+ * @param {Iterable} iterable - the input sequence to take items from
+ * @returns {Generator} - the output sequence
+ * @example
+ * const a = take(5, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+ * console.log([...a]) // prints [0, 1, 2, 3, 4]
+ */
 export const take = function * (n, iterable) {
   const iterator = iterable[Symbol.iterator]()
   let taken = 0
@@ -102,12 +229,35 @@ export const take = function * (n, iterable) {
     yield next.value
   }
 }
+
+/**
+ * Output items from the input iterable until fn(item) returns !truthy.
+ *
+ * @param {Function} fn - fn(item) returns truthy to put item in the output sequence
+ * @param {Iterable} iterable - input sequence
+ * @returns {Generator} - output sequence
+ * @example
+ * const a = takeWhile(x => x != 4, [0, 1, 2, 3, 4, 5, 6])
+ * console.log([...a]) // prints [0, 1, 2, 3]
+ */
 export const takeWhile = function * (fn, iterable) {
   for (let item of iterable) {
     if (fn(item) !== true) break
     yield item
   }
 }
+
+/**
+ * Pass the input sequence to the output sequence without change, but execute fn(item) for each
+ * item in the sequence.
+ *
+ * @param {Function} fn - fn(item) is called for each item in the sequence
+ * @param {Iterable} iterable - the input sequence
+ * @returns {Generator} - the output sequence
+ * @example
+ * const a = tap(console.log, [1, 2, 3, 4, 5])
+ * [...a] // prints [1, 2, 3, 4, 5]
+ */
 export const tap = (fn, iterable) => {
   return map(x => { fn(x); return x }, iterable)
 }
