@@ -1,30 +1,13 @@
-import tape from 'tape'
-import * as sequences from '../src/sequences.js'
-import * as transforms from '../src/transforms.js'
 
-const isEvenNumber = x => x % 2 === 0
-const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
 
-// The last parameter of all transforms is 'iterable'.
-// Effectively curry the transforms to make test parameters vs input iterable clearer
-const curried = {}
-for (let methodName in transforms) {
-  curried[methodName] = (...args) => (iterable) => transforms[methodName](...args, iterable)
-}
-
-const makeTestRunner = (test) => (parameters) => {
-  let [testName, inputIterable, iterableFactory, expectedOutput] = parameters
-  const iterable = iterableFactory(inputIterable)
-  test.deepEqual(Array.from(iterable), expectedOutput, testName)
-}
-
-tape('arrayToObject', test => {
+const testData = {
+  'arrayToObject': 
   [
-    // format: [testName, inputIterable, curried transform, expectedOutput]
+    // format: [testName, inputIterable, argList, expectedOutput]
     [
       'converts sequence of arrays to sequence of objects',
       [['George', 22], ['Betty', 18], ['Grandpa', 89], ['Sally', 42]],
-      curried.arrayToObject(['name', 'age']),
+      [['name', 'age']],
       [
         { 'name': 'George', 'age': 22 },
         { 'name': 'Betty', 'age': 18 },
@@ -35,7 +18,7 @@ tape('arrayToObject', test => {
     [
       'properties with no matching array element are set to undefined',
       [['George'], ['Betty', 18], ['Grandpa'], ['Sally', 42]],
-      curried.arrayToObject(['name', 'age']),
+      [['name', 'age']],
       [
         { 'name': 'George', 'age': undefined },
         { 'name': 'Betty', 'age': 18 },
@@ -46,7 +29,7 @@ tape('arrayToObject', test => {
     [
       'arrays with no matching property are ignored',
       [['George', 22, 45], ['Betty', 18, 63], ['Grandpa', 89], ['Sally', 42]],
-      curried.arrayToObject(['name', 'age']),
+      [['name', 'age']],
       [
         { 'name': 'George', 'age': 22 },
         { 'name': 'Betty', 'age': 18 },
@@ -54,42 +37,36 @@ tape('arrayToObject', test => {
         { 'name': 'Sally', 'age': 42 }
       ]
     ]
-  ].forEach(makeTestRunner(test))
-  test.end()
-})
-
-tape('chunk', test => {
+  ],
+  'chunk':
   [
-    // format: [testName, inputIterable, curried transform, expectedOutput]
+    // format: [testName, inputIterable, argList, expectedOutput]
     [
       'can generate all full length chunks',
-      sequences.range(12),
-      curried.chunk(3),
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      [3],
       [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]
     ],
     [
       'can generate partial chunk at end',
-      sequences.range(13),
-      curried.chunk(3),
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      [3],
       [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12]]
     ],
     [
       'empty input iterable outputs no chunks',
       [],
-      curried.chunk(3),
+      [3],
       []
     ]
-  ].forEach(makeTestRunner(test))
-  test.end()
-})
-
-tape('filter', test => {
+  ],
+  'filter':
   [
-    // format: [testName, inputIterable, curried transform, expectedOutput]
+    // format: [testName, inputIterable, arg list, expectedOutput]
     [
       'removes elements from sequence when function returns !truthy',
-      sequences.range(10),
-      curried.filter(isEvenNumber),
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+      [x => x % 2 === 0],
       Array.from(sequences.range(0, 5, 2))
     ],
     [
@@ -98,6 +75,10 @@ tape('filter', test => {
       curried.filter(x => true),
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     ]
+  ]
+}
+
+tape('filter', test => {
   ].forEach(makeTestRunner(test))
   test.end()
 })
@@ -162,24 +143,6 @@ tape('map', test => {
       sequences.range(5),
       curried.map(x => 3 * x),
       [0, 3, 6, 9, 12]
-    ]
-  ].forEach(makeTestRunner(test))
-  test.end()
-})
-
-const mapWithGenerator = function * (iterable) {
-  for (let x of iterable) {
-    yield x * x
-  }
-}
-
-tape('mapWith', test => {
-  [
-    [
-      'generates each output value using the provided generator function',
-      sequences.range(5),
-      curried.mapWith(mapWithGenerator),
-      [0, 1, 4, 9, 16]
     ]
   ].forEach(makeTestRunner(test))
   test.end()

@@ -20,11 +20,6 @@ export const makeChainableClass = (sequences, transforms, reducers) => {
     }
   }
 
-  // For those who don't like using new... make them use it anyway :)
-  Chainable.chainable = function (iterable) {
-    return new Chainable(iterable)
-  }
-
   // Dynamically add static Sequence methods to class
   for (let methodName in sequences) {
     Chainable[methodName] = function (...args) {
@@ -62,7 +57,7 @@ export const makeChainableIterable = (sequences, transforms, reducers) => {
   const ChainableClass = makeChainableClass(sequences, transforms, reducers)
 
   const ChainableIterable = function (iterable) {
-    return ChainableClass.chainable(iterable)
+    return new ChainableClass(iterable)
   }
 
   ChainableIterable.ChainableIterable = ChainableClass // provided to support testing

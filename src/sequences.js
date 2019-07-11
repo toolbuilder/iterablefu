@@ -14,6 +14,25 @@ export const concatenate = function * (...iterables) {
 }
 
 /**
+ * Creates a sequence from the input sequence. This function exists solely
+ * so that ChainableIterable has a static constructor method.
+ *
+ * @param {Iterable} inputIterable - the iterable
+ * @returns {Generator} - the same iterable that was passed in
+ * @example
+ * const generatorFunction = function * (n) {
+ *   for (let i = 0; i < n; i++) {
+ *     yield i
+ *   }
+ * }
+ * const generator = from(generatorFunction(3))
+ * console.log([...generator]) // prints [0, 1, 2]
+ */
+export const from = function (iterable) {
+  return iterable
+}
+
+/**
  * Creates a sequence of numbers similar to the Python range. See the example.
  *
  * @param  {...integer} args per the example

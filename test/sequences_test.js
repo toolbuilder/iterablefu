@@ -32,6 +32,23 @@ tape('concatentate', test => {
   test.end()
 })
 
+const fromGenerator = function * () {
+  for (let i = 0; i < 5; i++) {
+    yield i
+  }
+}
+
+tape('from', test => {
+  [
+    {
+      name: 'creates a sequence from the provided generator',
+      actual: Sequences.from(fromGenerator()),
+      expected: [0, 1, 2, 3, 4]
+    }
+  ].forEach(makeTestRunner(test))
+  test.end()
+})
+
 tape('range', test => {
   [
     // Generating tests from data:

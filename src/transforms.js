@@ -133,7 +133,7 @@ export const flattenPerFunction = function * (fn, iterable) {
  * @param {Iterable} iterable - the sequence to flatten
  * @returns {Generator} - the flattened sequence
  * @example
- * const input = [0, [1, 2, 3], [[4, 5], [[[6, 7]], [8, 9], 10]], 11, 12],
+ * const input = [0, [1, 2, 3], [[4, 5], [[[6, 7]], [8, 9], 10]], 11, 12]
  * const a = flattenRecursive(input)
  * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
  */
@@ -161,6 +161,25 @@ export const map = function * (fn, iterable) {
   for (let value of iterable) {
     yield fn(value)
   }
+}
+
+/**
+ * Map the input sequence to the output sequence with a generator that maps one iterator to another.
+ *
+ * @param {*} generatorFunction - a generator function that takes the input iterable as a parameter
+ * @param {*} iterable - the input sequence
+ * @returns {Generator} - the mapped sequence
+ * @example
+ * const fn = function * (iterable) {
+ *   for (let x of iterable) {
+ *     yield x * x
+ *   }
+ * }
+ * const a = mapWith(fn, [0, 1, 2, 3])
+ * console.log([...a]) // prints [0, 1, 4, 9]
+ */
+export const mapWith = function (generatorFunction, iterable) {
+  return generatorFunction(iterable)
 }
 
 /**

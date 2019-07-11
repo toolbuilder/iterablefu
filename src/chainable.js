@@ -8,7 +8,8 @@ const chainable = makeChainableIterable(sequences, transforms, reducers)
 const ChainableIterable = chainable.ChainableIterable
 
 // Everything has been imported and used (visibly or not) to build chainable
-// Therefore export everything for convenience.
+// No unnecessary dependencies created by exporting everything, and it is
+// convenient for users.
 export {
   chainable,
   ChainableIterable,

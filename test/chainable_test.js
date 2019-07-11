@@ -54,7 +54,7 @@ tape('ChainableIterable', test => {
     {
       name: 'has all static methods',
       actual: [...Object.keys(ChainableIterable)],
-      expected: ['chainable', ...Object.keys(sequences)]
+      expected: [...Object.keys(sequences)]
     },
     {
       name: 'has all transform and reducer methods',
@@ -68,7 +68,7 @@ tape('ChainableIterable', test => {
     },
     {
       name: 'has static chainable constructor method',
-      actual: [...ChainableIterable.chainable([1, 2, 3])],
+      actual: [...ChainableIterable.from([1, 2, 3])],
       expected: [1, 2, 3]
     }
   ].forEach(makeTestRunner(test))
