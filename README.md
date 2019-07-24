@@ -14,47 +14,9 @@ It also provides a chainable iterable, which can be customized to reduce bundle 
 * Written using ES modules
 * Browser version has zero dependencies. Node uses esm for the CommonJS interface.
 
-## When To Use
-
-Iterables shine when you need to process a sequence of data synchronously. For example, `IterableFu` dynamically
-creates the primary classes. That makes it a bit difficult to write JSDoc for them. So `IterableFu` uses
-itself to generate documentation from the functional API documentation. Iterables make it much easier to maintain
-state while iterating through a data sequence. A google search on javascript generators and iterables will turn
-up many more examples.
-
-If you're performing simple transformations on small amounts of data, then the built in transforms such as Array.map will probably
-work just as well. Slightly more complicated would be lodash **link** or underscore **link**. These approaches create a new Array
-for each transformation, so can be expensive on large amounts of data.
-
-Iterables provide synchronous pull behavior - the data source is synchronous, and the caller pulls data from the source as needed. **link to stream taxonomy**. Iterables are good if you already have the data you want to transform in memory. If asynchronous push fits
-your needs better, an Observable library such as Kefir **link** or RxJs **link** would be preferable. Or you could use async generators.
-
-You can use this library with Observable libraries because they all implement `Observable.from(iterable)`. If you're already
-comfortable with the Observable model: Observable, Observer, Subscriber, cold observables, hot observables, etc. Then you can
-probably get by without `IterableFu`. I personally find Iterables a lot simpler for smaller projects.
-
-```javascript
-// Converting from IterableFu to Observable
-const iterable = chainable.range(5)
-const observaable = Observable.from(iterable)
-```
-
 ## Table of Contents
 
-**TODO Generate this**
-
-* Installation
-* Getting Started
-* API Links
-* Examples
-  * Basics
-  * One Time Use
-  * Generators
-  * Extending
-  * Reducing bundle size
-* Alternatives
-* License
-* References
+!toc (minlevel=2 omit="Features;Table of Contents")
 
 ## Installation
 
@@ -225,7 +187,6 @@ const customChainable = makeChainableIterable(mySequences, myTransforms, reducer
 
 // Use your new class
 const a = customChainable.simpleRange(3).multiply(2).toArray()
-
 ```
 
 If you don't like `makeChainableIterable` or `makeChainableClass`, then you can extend `ChainableIterable`.
@@ -264,6 +225,33 @@ import * as transforms from './src/transforms.js'
 import * as reducers from './src/reducers.js'
 import { makeChainableIterable } from './src/makechainable.js'
 const chainable = makeChainableIterable(sequences, transforms, reducers)
+```
+
+## When To Use
+
+Iterables shine when you need to process a sequence of data synchronously. For example, `IterableFu` dynamically
+creates the primary classes. That makes it a bit difficult to write JSDoc for them. So `IterableFu` uses
+itself to generate documentation from the functional API documentation. Iterables make it much easier to maintain
+state while iterating through a data sequence. A google search on javascript generators and iterables will turn
+up many more examples.
+
+If you're performing simple transformations on small amounts of data, then the built in transforms such as Array.map will probably
+work just as well. Slightly more complicated would be lodash **link** or underscore **link**. These approaches create a new Array
+for each transformation, so can be expensive on large amounts of data.
+
+Iterables provide synchronous pull behavior - the data source is synchronous, and the caller pulls data from the source as needed. **link to stream taxonomy**. Iterables are good if you already have the data you want to transform in memory. If asynchronous push fits
+your needs better, an Observable library such as Kefir **link** or RxJs **link** would be preferable. Or you could use async generators.
+
+You can use this library with Observable libraries because they all implement `Observable.from(iterable)`. If you're already
+comfortable with the Observable model: Observable, Observer, Subscriber, cold observables, hot observables, etc. Then you can
+probably get by without `IterableFu`. I personally find Iterables a lot simpler for smaller projects.
+
+TODO: vs Streams - streams provide backpressure, more specialized, more capable for those use cases I/O. Only now being added to browsers.
+
+```javascript
+// Converting from IterableFu to Observable
+const iterable = chainable.range(5)
+const observaable = Observable.from(iterable)
 ```
 
 ## Alternatives

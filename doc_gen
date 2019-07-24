@@ -1,0 +1,9 @@
+#!/bin/bash
+# TODO: break up documentation by generators, transforms, and reducers
+# TODO: figure out how to link it all together
+# documentation build ./src/sequences.js -f md --markdown-toc-max-depth 2 --shallow > sequences.md
+# documentation build ./src/transforms.js -f md --markdown-toc-max-depth 2 --shallow > transforms.md
+# documentation build ./src/reducers.js -f md --markdown-toc-max-depth 2 --shallow > reducers.md
+# node -r esm async_read.js | node_modules/.bin/markedpp --github > ChainableIterable.md
+# node -r esm async_read.js > ChainableIterable.md
+node -r esm ./scripts/async_read.js

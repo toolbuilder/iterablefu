@@ -18,7 +18,7 @@ export const concatenate = function * (...iterables) {
  * so that ChainableIterable has a static constructor method.
  *
  * @param {Iterable} inputIterable - the iterable
- * @returns {Generator} - the same iterable that was passed in
+ * @returns {Generator} that represents the same iterable that was passed in
  * @example
  * const generatorFunction = function * (n) {
  *   for (let i = 0; i < n; i++) {
@@ -36,7 +36,7 @@ export const from = function (iterable) {
  * Creates a sequence of numbers similar to the Python range. See the example.
  *
  * @param  {...integer} args per the example
- * @returns {Generator} for the range
+ * @returns {Generator} that represents the range
  * @example
  * console.log([...range()]) // prints []
  *
@@ -71,7 +71,7 @@ export const range = (...args) => {
  *
  * @param {number} n - the number of times to repeat thing
  * @param {any} thing - the repeated thing
- * @returns {Generator} - the output sequence
+ * @returns {Generator} that will repeat thing, n times
  * @example
  * const generator = repeat(5, 'a')
  * console.log([...generator]) // prints ['a', 'a', 'a', 'a', 'a']
@@ -93,7 +93,7 @@ export const repeat = function * (n, thing) {
  *
  * @param {number} n - number of times to repeat iterable
  * @param {Iterable} iterable - the input iterable to repeat, soe notes above and example.
- * @returns {Generator} - input iterable repeated n times
+ * @returns {Generator} - that will repeat the input iterable n times
  * @example
  * // As noted above, use iterable objects, not generator functions with repeatIterable
  * const fn = (length) => {
@@ -130,7 +130,7 @@ export const repeatIterable = function * (n, iterable) {
  * iterables provided, and so on.
  *
  * @param  {...Iterable} iterables the iterables to be zipped
- * @returns {Generator} a sequence of arrays
+ * @returns {Generator} for the zipped arrays
  * @example
  * const a = [0, 1, 2]
  * const b = ['a', 'b', 'c', 'd', 'e', 'f'] // note that this array is longer than a
@@ -154,7 +154,7 @@ export const zip = function * (...iterables) {
  * iterables provided, and so on. Missing elements from the shorter iterables are set to undefined.
  *
  * @param  {...Iterable} iterables the iterables to be zipped
- * @returns {Generator} a sequence of arrays
+ * @returns {Generator} for the zipped arrays
  * @example
  * const a = [0, 1, 2]
  * const b = ['a', 'b', 'c', 'd'] // note that this array is longer than a

@@ -12,7 +12,7 @@ import { zipAll } from './sequences.js'
  *
  * @param {Iterable} propertyNames - a sequence of property names
  * @param {Iterable} iterable - a sequence of arrays (or any iterable objects)
- * @return {Generator} - a sequence of objects
+ * @return {Generator} for the sequence of Objects
  * @example
  * const objects = arrayToObject(['a', 'b'], [[0, 1], [2, 3, 'a'], [4]])
  * // objects is [{'a': 0, 'b': 1 }, {'a': 2, 'b': 3 }, {'a': 4, 'b': undefined }]
@@ -36,7 +36,7 @@ export const arrayToObject = function (propertyNames, iterable) {
  *
  * @param {number} n - the number of items to group into each array.
  * @param {Iterable} iterable - the sequence of items to group
- * @return {Generator} - a sequence of grouped items
+ * @return {Generator} for the chunked sequence
  * @example
  * const a = chunk(2, [0, 1, 2, 3, 4, 5, 6])
  * console.log([...a]) // prints [[0, 1], [2, 3], [4, 5], [6]]
@@ -61,7 +61,7 @@ export const chunk = function * (n, iterable) {
  *
  * @param {Function} fn - fn(item) returns truthy when item should be removed
  * @param {Iterable} iterable - the sequence to filter
- * @return {Generator} - the filtered sequence
+ * @return {Generator} for the filtered sequence
  * @example
  * const isEvenNumber = x => x % 2 === 0
  * const a = filter(isEvenNumber, [0, 1, 2, 3, 4, 5, 6])
@@ -86,7 +86,7 @@ const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
  * though they are iterable. Use FlattenPerFunction if you want to flatten strings.
  *
  * @param {Iterable} iterable - the iterable sequence to flatten
- * @returns {Generator} - the flattened sequence
+ * @returns {Generator} for the flattened sequence
  * @example
  * const a = flatten([[0, 1], [2, 3], [4, 5], [6]])
  * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6]
@@ -107,7 +107,7 @@ export const flatten = function (iterable) {
  *
  * @param {Function} fn - fn(item) returns Object, {iterate: true // or false, itemToYield: func(item) }
  * @param {Iterable} iterable - the sequence to flatten
- * @returns {Generator} - the flattened sequence
+ * @returns {Generator} for the flattened sequence
  * @example
  * // this example flattens any iterable, including strings, one level deep
  * const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
@@ -128,10 +128,11 @@ export const flattenPerFunction = function * (fn, iterable) {
 }
 
 /**
- * Flattens a sequence recursively. Does not flatten strings even though they are iterable.
+ * Flattens a sequence by recursively returning items from each iterable in the sequence.
+ * Does not flatten strings even though they are iterable.
  *
  * @param {Iterable} iterable - the sequence to flatten
- * @returns {Generator} - the flattened sequence
+ * @returns {Generator} for the flattened sequence
  * @example
  * const input = [0, [1, 2, 3], [[4, 5], [[[6, 7]], [8, 9], 10]], 11, 12]
  * const a = flattenRecursive(input)
@@ -152,7 +153,7 @@ export const flattenRecursive = function (iterable) {
  *
  * @param {Function} fn - fn(item) returns the output item
  * @param {Iterable} iterable - the sequence to map
- * @returns {Generator} - the mapped sequence
+ * @returns {Generator} for the mapped sequence
  * @example
  * const a = map(x => 2 * x, [0, 1, 2, 3])
  * console.log([...a]) // prints [0, 2, 4, 6]
@@ -168,7 +169,7 @@ export const map = function * (fn, iterable) {
  *
  * @param {*} generatorFunction - a generator function that takes the input iterable as a parameter
  * @param {*} iterable - the input sequence
- * @returns {Generator} - the mapped sequence
+ * @returns {Generator} for the mapped sequence
  * @example
  * const fn = function * (iterable) {
  *   for (let x of iterable) {
@@ -187,7 +188,7 @@ export const mapWith = function (generatorFunction, iterable) {
  *
  * @param {number} index - the index of the Array to output
  * @param {Iterable} iterable - the iterable to process
- * @returns {Generator} - the mapped iterable
+ * @returns {Generator} for the nth elements
  * @example
  * const input = [[0, 1], [2, 3], [4, 5]]
  * const a = nth(1, input)
@@ -202,7 +203,7 @@ export const nth = (index, iterable) => {
  *
  * @param {string} propertyname - the property to extract from each Object
  * @param {Iterable} iterable - the input sequence of Objects
- * @returns {Generator} - the output sequence
+ * @returns {Generator} for the plucked items
  * @example
  * const input = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
  * const a = pluck('a', input)
@@ -217,7 +218,7 @@ export const pluck = (propertyname, iterable) => {
  *
  * @param {Function} fn - fn(item) returns truthy when item should be removed from output sequence
  * @param {Iterable} iterable - input sequence
- * @returns {Generator} - filtered output sequence
+ * @returns {Generator} for the non-rejected items
  * @example
  * const isEvenNumber = x => x % 2 === 0
  * const a = reject(isEvenNumber, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
@@ -232,7 +233,7 @@ export const reject = (fn, iterable) => {
  *
  * @param {number} n - the number of items to take
  * @param {Iterable} iterable - the input sequence to take items from
- * @returns {Generator} - the output sequence
+ * @returns {Generator} for the first n items
  * @example
  * const a = take(5, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
  * console.log([...a]) // prints [0, 1, 2, 3, 4]
@@ -254,7 +255,7 @@ export const take = function * (n, iterable) {
  *
  * @param {Function} fn - fn(item) returns truthy to put item in the output sequence
  * @param {Iterable} iterable - input sequence
- * @returns {Generator} - output sequence
+ * @returns {Generator} for the selected items
  * @example
  * const a = takeWhile(x => x != 4, [0, 1, 2, 3, 4, 5, 6])
  * console.log([...a]) // prints [0, 1, 2, 3]
@@ -267,12 +268,12 @@ export const takeWhile = function * (fn, iterable) {
 }
 
 /**
- * Pass the input sequence to the output sequence without change, but execute fn(item) for each
+ * Pass the input sequence to the output sequence without change, but execute `fn(item)` for each
  * item in the sequence.
  *
- * @param {Function} fn - fn(item) is called for each item in the sequence
+ * @param {Function} fn - `fn(item)` is called for each item in the sequence
  * @param {Iterable} iterable - the input sequence
- * @returns {Generator} - the output sequence
+ * @returns {Generator} that is equivalent to the input iterable
  * @example
  * const a = tap(console.log, [1, 2, 3, 4, 5])
  * [...a] // prints [1, 2, 3, 4, 5]
