@@ -1,7 +1,6 @@
 {
   "dependencies": {
-    "esm": "^3.2.25",
-    "mississippi": "^4.0.0"
+    "esm": "^3.2.25"
   },
   "description": "Customizable, chainable, transforms like map, reduce, filter, zip, chain, etc., for iterable objects.",
   "devDependencies": {
@@ -11,6 +10,7 @@
     "dot": "^1.1.2",
     "markedpp": "^1.0.1",
     "rollup": "^1.16.6",
+    "rollup-plugin-terser": "^5.1.1",
     "scripty": "^1.9.1",
     "split": "^1.0.1",
     "tap-nirvana": "^1.1.0",
@@ -34,8 +34,9 @@
   "module": "src/chainable.js",
   "name": "iterablefu",
   "scripts": {
+    "build": "rollup -c config/rollup.config.js",
     "docs": "node -r esm scripts/docgen.js",
     "test": "tape -r esm test/*_test.js | tap-nirvana"
   },
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

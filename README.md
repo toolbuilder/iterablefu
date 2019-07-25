@@ -1,6 +1,7 @@
 # IterableFu
 
-`IterableFu` is a small library that provides functions like range, map, reduce, filter, zip, for iterable objects.
+`IterableFu` is a small (1.2kb gzipped) library that provides functions like range, map, reduce, filter, zip, for iterable objects.
+
 It also provides a chainable iterable, which can be customized to reduce bundle size, or extended.
 
 ## Features

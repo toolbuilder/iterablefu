@@ -109,7 +109,7 @@ const loadHeader = async function (filename) {
 
 const docGenFor = async function (filename) {
   const docs = await documentation.build([filename], documentationOptions).then(documentation.formats.md)
-  return docs.split('\n')
+  return docs.split('\n') // .map(line => line.replace(/^- /, '* '))
 }
 
 const addToc = async function (withoutToc) {
