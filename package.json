@@ -2,17 +2,16 @@
   "dependencies": {
     "esm": "^3.2.25"
   },
-  "description": "Customizable, chainable, transforms like map, reduce, filter, zip, chain, etc., for iterable objects.",
+  "description": "Small (1.2kb gz), set of functions like range, map, reduce, filter, zip, for iterable objects.",
   "devDependencies": {
     "@babel/core": "^7.5.0",
     "@babel/plugin-transform-async-to-generator": "^7.5.0",
     "documentation": "^11.0.1",
     "dot": "^1.1.2",
     "markedpp": "^1.0.1",
+    "npm-run-all": "^4.1.5",
     "rollup": "^1.16.6",
     "rollup-plugin-terser": "^5.1.1",
-    "scripty": "^1.9.1",
-    "split": "^1.0.1",
     "tap-nirvana": "^1.1.0",
     "tape": "^4.11.0"
   },
@@ -27,16 +26,15 @@
     "chainable",
     "esm",
     "functional",
-    "tree-shaking",
     "transducers"
   ],
   "main": "index.js",
   "module": "src/chainable.js",
   "name": "iterablefu",
   "scripts": {
-    "build": "rollup -c config/rollup.config.js",
+    "build": "rollup -c rollup.config.js",
     "docs": "node -r esm scripts/docgen.js",
     "test": "tape -r esm test/*_test.js | tap-nirvana"
   },
-  "version": "0.2.0"
+  "version": "0.3.0"
 }

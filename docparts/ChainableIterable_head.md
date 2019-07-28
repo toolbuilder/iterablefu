@@ -1,7 +1,6 @@
 # ChainableIterable
 
-The `ChainableIterable` implements chaining for the `IterableFu` package. Typically, instances are created using `chainable`
-instead of creating `ChainableIterable` directly.
+The `ChainableIterable` implements chaining for the `IterableFu` package. Typically, instances are created using [chainable](chainable.md) instead of creating `ChainableIterable` directly.
 
 ```javascript
 import { chainable, ChainableIterable } from 'iterablefu'
@@ -26,5 +25,3 @@ console.log(a) // prints [1, 2, 3]
 ```
 
 ## Table of Contents
-
-

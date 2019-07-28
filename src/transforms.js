@@ -1,5 +1,5 @@
 
-import { zipAll } from './sequences.js'
+import { zipAll } from './generators.js'
 
 /**
  * Converts a sequence of Arrays to a sequence of Objects by assigning the property names
@@ -56,7 +56,7 @@ export const chunk = function * (n, iterable) {
 }
 
 /**
- * Keeps item from input sequence when fn(item) returns truty. Remove items from input sequence when
+ * Keeps item from input sequence when fn(item) returns truthy. Remove items from input sequence when
  * fn(item) returns !truthy.
  *
  * @param {Function} fn - fn(item) returns truthy when item should be removed
@@ -83,7 +83,7 @@ const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
 
 /**
  * Flattens a sequence of items one level deep. It does not flatten strings, even
- * though they are iterable. Use FlattenPerFunction if you want to flatten strings.
+ * though they are iterable.
  *
  * @param {Iterable} iterable - the iterable sequence to flatten
  * @returns {Generator} for the flattened sequence
@@ -91,38 +91,12 @@ const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
  * const a = flatten([[0, 1], [2, 3], [4, 5], [6]])
  * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6]
  */
-export const flatten = function (iterable) {
-  const notStringsAndNotRecursive = (item) => {
-    if (!isString(item) && isIterable(item)) {
-      return { iterate: true, itemToYield: item }
-    }
-    return { iterate: false, itemToYield: item }
-  }
-  return flattenPerFunction(notStringsAndNotRecursive, iterable)
-}
-
-/**
- * Flattens an input sequence as guided by the fn(item) return value. Both flatten and
- * flattenRecursive provide examples for using this function.
- *
- * @param {Function} fn - fn(item) returns Object, {iterate: true // or false, itemToYield: func(item) }
- * @param {Iterable} iterable - the sequence to flatten
- * @returns {Generator} for the flattened sequence
- * @example
- * // this example flattens any iterable, including strings, one level deep
- * const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
- * const input = [0, [1, 2, 3], [4, 5, 6], [['a', 'b'], 7], 8, 9]
- * const a = flattenPerFunction(x => ({ iterate: isIterable(x), itemToYield: x }), input)
- * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, ['a', 'b'], 7, 8, 9]
- *
- */
-export const flattenPerFunction = function * (fn, iterable) {
+export const flatten = function * (iterable) {
   for (let value of iterable) {
-    const { iterate, itemToYield } = fn(value)
-    if (iterate) {
-      yield * itemToYield
+    if (!isString(value) && isIterable(value)) {
+      yield * value
     } else {
-      yield itemToYield
+      yield value
     }
   }
 }
@@ -138,14 +112,14 @@ export const flattenPerFunction = function * (fn, iterable) {
  * const a = flattenRecursive(input)
  * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
  */
-export const flattenRecursive = function (iterable) {
-  const notStringsAndRecursive = (item) => {
-    if (!isString(item) && isIterable(item)) {
-      return { iterate: true, itemToYield: this.flattenPerFunction(notStringsAndRecursive, item) }
+export const flattenRecursive = function * (iterable) {
+  for (let value of iterable) {
+    if (!isString(value) && isIterable(value)) {
+      yield * flattenRecursive(value)
+    } else {
+      yield value
     }
-    return { iterate: false, itemToYield: item }
   }
-  return flattenPerFunction(notStringsAndRecursive, iterable)
 }
 
 /**
@@ -167,8 +141,11 @@ export const map = function * (fn, iterable) {
 /**
  * Map the input sequence to the output sequence with a generator that maps one iterator to another.
  *
- * @param {*} generatorFunction - a generator function that takes the input iterable as a parameter
- * @param {*} iterable - the input sequence
+ * This method exists solely so that ChainableIterable supports chaining for an arbitrary generator function.
+ *
+ * @param {Function} generatorFunction - a function that returns an iterable object, and takes an iterable as a parameter.
+ * Typically, this will be a generator function.
+ * @param {Iterable} iterable - the input sequence
  * @returns {Generator} for the mapped sequence
  * @example
  * const fn = function * (iterable) {

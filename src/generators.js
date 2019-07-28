@@ -92,11 +92,11 @@ export const repeat = function * (n, thing) {
  * new state. See the examples below...
  *
  * @param {number} n - number of times to repeat iterable
- * @param {Iterable} iterable - the input iterable to repeat, soe notes above and example.
+ * @param {Iterable} repeatableIterable - the input iterable to repeat, see notes above and examples.
  * @returns {Generator} - that will repeat the input iterable n times
  * @example
  * // As noted above, use iterable objects, not generator functions with repeatIterable
- * const fn = (length) => {
+ * const repeatable = (length) => {
  *   return {
  *     * [Symbol.iterator] () {
  *       for (let i = 0; i < length; i++) {
@@ -105,22 +105,21 @@ export const repeat = function * (n, thing) {
  *     }
  *   }
  * }
- * const a = repeatIterable(3, fn(3))
+ * const a = repeatIterable(3, repeatable(3))
  * console.log([...a]) // prints [0, 1, 2, 0, 1, 2, 0, 1, 2] as expected
  *
- * @example
- * // NOTE: This generator function will not work as expected with repeatIterable.
+  * // NOTE: This generator function will not work as expected with repeatIterable.
  * const oneTime = function * (length) {
  *   for (let i = 0; i < length; i++) {
  *     yield i
  *   }
  * }
- * const a = repeatIterable(3, oneTime(3))
- * console.log([...a]) // prints [0, 1, 2] OOPS!!!!
+ * const b = repeatIterable(3, oneTime(3))
+ * console.log([...b]) // prints [0, 1, 2] OOPS!!!!
  */
-export const repeatIterable = function * (n, iterable) {
+export const repeatIterable = function * (n, repeatableIterable) {
   for (let i = 0; i < n; i++) {
-    yield * iterable
+    yield * repeatableIterable
   }
 }
 

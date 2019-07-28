@@ -42,7 +42,7 @@ console.log([...generator]) // prints ['a', 'a', 'a', 'a', 'a']
 ```javascript
 // As noted above, use functions that create iterable objects,
 // not generator functions, with repeatIterable.
-const fn = (length) => {
+const repeatable = (length) => {
   return {
     * [Symbol.iterator] () {
       for (let i = 0; i < length; i++) {
@@ -51,19 +51,17 @@ const fn = (length) => {
     }
   }
 }
-const a = {{=it.static}}.repeatIterable(3, fn(3))
+const a = {{=it.static}}.repeatIterable(3, repeatable(3))
 console.log([...a]) // prints [0, 1, 2, 0, 1, 2, 0, 1, 2] as expected
-```
 
-```javascript
 // NOTE: This generator function will not work as expected with repeatIterable.
 const oneTime = function * (length) {
   for (let i = 0; i < length; i++) {
     yield i
   }
 }
-const a = {{=it.static}}.repeatIterable(3, oneTime(3))
-console.log([...a]) // prints [0, 1, 2] OOPS!!!!
+const b = {{=it.static}}.repeatIterable(3, oneTime(3))
+console.log([...b]) // prints [0, 1, 2] OOPS!!!!
 ```
 
 ### zip
@@ -117,16 +115,6 @@ console.log(a) // prints even numbers [0, 2, 4, 6]
 const input = [[0, 1], [2, 3], [4, 5], [6]]
 const a = {{=it.ctor}}(input).flatten().toArray()
 console.log(a) // prints [0, 1, 2, 3, 4, 5, 6]
-```
-
-### flattenPerFunction
-
-```javascript
-// this example flattens any iterable, including strings, one level deep
-const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
-const input = [0, [1, 2, 3], [4, 5, 6], [['a', 'b'], 7], 8, 9]
-const a = {{=it.ctor}}(input).flattenPerFunction(x => ({ iterate: isIterable(x), itemToYield: x })).toArray()
-console.log(a) // prints [0, 1, 2, 3, 4, 5, 6, ['a', 'b'], 7, 8, 9]
 ```
 
 ### flattenRecursive

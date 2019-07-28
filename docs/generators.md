@@ -1,21 +1,14 @@
-# Factory Methods
+# Generator Methods
 
-Factory methods to create an iterable sequence from something else.
+Generator methods to create an iterable sequence from something else.
 
 ## Usage
 
-The simplest way to import all the factory methods is to use the full package.
+The `IterableFu` package exports the generators as an Object.
 
 ```javascript
-import { sequences } from 'iterablefu'
-console.log(...sequences.range(5)) // prints 0 1 2 3 4
-```
-
-To minimize dependencies to support tree-shaking, import individual functions.
-
-```javascript
-import { range } from './src/sequences.js'
-console.log(...range(5)) // prints 0 1 2 3 4
+import { generators } from 'iterablefu'
+console.log(...generators.range(5)) // prints 0 1 2 3 4
 ```
 
 ## Table of Contents
@@ -50,7 +43,7 @@ const generator = concatenate([0, 1, 2], [3, 4])
 console.log([...generator]) // prints [0, 1, 2, 3, 4]
 ```
 
-Returns **Generator** that provides the output of each iterable in turn
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) that provides the output of each iterable in turn
 
 ## from
 
@@ -74,7 +67,7 @@ const generator = from(generatorFunction(3))
 console.log([...generator]) // prints [0, 1, 2]
 ```
 
-Returns **Generator** that represents the same iterable that was passed in
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) that represents the same iterable that was passed in
 
 ## range
 
@@ -96,7 +89,7 @@ console.log([...range(2, 5)]) // prints [2, 3, 4, 5, 6]
 console.log([...range(2, 5, 3)] // prints [2, 5, 8, 11, 14]
 ```
 
-Returns **Generator** that represents the range
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) that represents the range
 
 ## repeat
 
@@ -114,7 +107,7 @@ const generator = repeat(5, 'a')
 console.log([...generator]) // prints ['a', 'a', 'a', 'a', 'a']
 ```
 
-Returns **Generator** that will repeat thing, n times
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) that will repeat thing, n times
 
 ## repeatIterable
 
@@ -129,13 +122,13 @@ new state. See the examples below...
 ### Parameters
 
 - `n` **[number][1]** number of times to repeat iterable
-- `iterable` **Iterable** the input iterable to repeat, soe notes above and example.
+- `repeatableIterable` **Iterable** the input iterable to repeat, see notes above and examples.
 
 ### Examples
 
 ```javascript
 // As noted above, use iterable objects, not generator functions with repeatIterable
-const fn = (length) => {
+const repeatable = (length) => {
   return {
     * [Symbol.iterator] () {
       for (let i = 0; i < length; i++) {
@@ -144,22 +137,20 @@ const fn = (length) => {
     }
   }
 }
-const a = repeatIterable(3, fn(3))
+const a = repeatIterable(3, repeatable(3))
 console.log([...a]) // prints [0, 1, 2, 0, 1, 2, 0, 1, 2] as expected
-```
 
-```javascript
 // NOTE: This generator function will not work as expected with repeatIterable.
 const oneTime = function * (length) {
   for (let i = 0; i < length; i++) {
     yield i
   }
 }
-const a = repeatIterable(3, oneTime(3))
-console.log([...a]) // prints [0, 1, 2] OOPS!!!!
+const b = repeatIterable(3, oneTime(3))
+console.log([...b]) // prints [0, 1, 2] OOPS!!!!
 ```
 
-Returns **Generator** that will repeat the input iterable n times
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) that will repeat the input iterable n times
 
 ## zip
 
@@ -180,7 +171,7 @@ const generator = zip(a, b)
 console.log([...generator]) // prints [[0, 'a'], [1, 'b'], [2, 'c']]
 ```
 
-Returns **Generator** for the zipped arrays
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the zipped arrays
 
 ## zipAll
 
@@ -201,6 +192,6 @@ const generator = zipAll(a, b)
 console.log([...generator]) // prints [[0, 'a'], [1, 'b'], [2, 'c'], [undefined, 'd']]
 ```
 
-Returns **Generator** for the zipped arrays
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the zipped arrays
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number

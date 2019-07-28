@@ -1,14 +1,14 @@
 /**
  * Dynamically create a ChainableClass. This differs from makeChainableIterator only in that the class can't be
- * called as a function. See customization tutorial for more information.
+ * called as a function.
  *
- * @param {Object} sequences - Each key is the name of a sequence generator, the value is a generator function.
+ * @param {Object} generators - Each key is the name of a generator, the value is a generator function.
  * @param {Object} transforms - Each key is the name of a transform, the value is a generator function that takes
- * a Generator as the last argument.
- * @param {Object} reducers - Each key is the name of a reducer, the value is a generator function that takes a
- * Generator as the last argument.
+ * an iterable as the last argument.
+ * @param {Object} reducers - Each key is the name of a reducer, the value is a function that takes the iterable
+ * to reduce as the last argument.
  */
-export const makeChainableClass = (sequences, transforms, reducers) => {
+export const makeChainableClass = (generators, transforms, reducers) => {
   // construct chainable iterable class using both class semantics
   // then add methods using the classic prototype assignment technique
   const Chainable = class {
@@ -21,9 +21,9 @@ export const makeChainableClass = (sequences, transforms, reducers) => {
   }
 
   // Dynamically add static Sequence methods to class
-  for (let methodName in sequences) {
+  for (let methodName in generators) {
     Chainable[methodName] = function (...args) {
-      return new Chainable(sequences[methodName](...args))
+      return new Chainable(generators[methodName](...args))
     }
   }
 
@@ -45,16 +45,16 @@ export const makeChainableClass = (sequences, transforms, reducers) => {
 }
 
 /**
- * Dynamically create a ChainableIterable class/function. See customization tutorial for more information.
+ * Dynamically create a ChainableIterable class/function.
  *
- * @param {Object} sequences - Each key is the name of a sequence generator, the value is a generator function.
+ * @param {Object} generators - Each key is the name of a generator, the value is a generator function.
  * @param {Object} transforms - Each key is the name of a transform, the value is a generator function that takes
- * a Generator as the last argument.
- * @param {Object} reducers - Each key is the name of a reducer, the value is a generator function that takes a
- * Generator as the last argument.
+ * the iterable to transform as the last argument.
+ * @param {Object} reducers - Each key is the name of a reducer, the value is a function that takes the iterable to
+ * reduce as the last argument.
  */
-export const makeChainableIterable = (sequences, transforms, reducers) => {
-  const ChainableClass = makeChainableClass(sequences, transforms, reducers)
+export const makeChainableIterable = (generators, transforms, reducers) => {
+  const ChainableClass = makeChainableClass(generators, transforms, reducers)
 
   const ChainableIterable = function (iterable) {
     return new ChainableClass(iterable)
@@ -63,7 +63,7 @@ export const makeChainableIterable = (sequences, transforms, reducers) => {
   ChainableIterable.ChainableIterable = ChainableClass // provided to support testing
 
   // Dynamically add static sequence generator methods to class
-  for (let methodName in sequences) {
+  for (let methodName in generators) {
     ChainableIterable[methodName] = function (...args) {
       return ChainableClass[methodName](...args)
     }

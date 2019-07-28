@@ -4,7 +4,7 @@ import {
   ChainableIterable,
   makeChainableClass,
   makeChainableIterable,
-  sequences,
+  generators,
   transforms,
   reducers
 } from '../src/chainable.js'
@@ -25,12 +25,12 @@ tape('chainable', test => {
       expected: true
     },
     {
-      name: 'has expected sequence generator methods',
+      name: 'has expected generator methods',
       actual: [...Object.keys(chainable)].sort(),
-      expected: ['ChainableIterable', ...Object.keys(sequences)].sort()
+      expected: ['ChainableIterable', ...Object.keys(generators)].sort()
     },
     {
-      name: 'sequence generator methods return ChainableIterable',
+      name: 'generator methods return ChainableIterable',
       actual: chainable.repeat(3, 'a') instanceof ChainableIterable,
       expected: true
     }
@@ -54,7 +54,7 @@ tape('ChainableIterable', test => {
     {
       name: 'has all static methods',
       actual: [...Object.keys(ChainableIterable)],
-      expected: [...Object.keys(sequences)]
+      expected: [...Object.keys(generators)]
     },
     {
       name: 'has all transform and reducer methods',
@@ -78,7 +78,7 @@ tape('ChainableIterable', test => {
 tape('makeChainableClass', test => {
   // Just making sure this is makeChainableClass from '../src/makechainable.js'
   // This class functions identically to ChainableIterable
-  const Chainable = makeChainableClass(sequences, transforms, reducers)
+  const Chainable = makeChainableClass(generators, transforms, reducers)
   test.deepEqual([...new Chainable([1, 2, 3])], [1, 2, 3], 'makes a chainable iterable class')
   test.end()
 })
@@ -86,7 +86,7 @@ tape('makeChainableClass', test => {
 tape('makeChainableIterable', test => {
   // Just making sure this is makeChainableIterable from '../src/makechainable.js'
   // This object functions identically to chainable
-  const ChainableFunc = makeChainableIterable(sequences, transforms, reducers)
+  const ChainableFunc = makeChainableIterable(generators, transforms, reducers)
   test.deepEqual([...ChainableFunc([1, 2, 3])], [1, 2, 3], 'makes a Chainable function')
   test.end()
 })

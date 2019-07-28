@@ -18,7 +18,6 @@ console.log(...transforms.map(x => 2 * x, [0, 1, 2])) // prints 0 2 4
 * [chunk](#chunk)
 * [filter](#filter)
 * [flatten](#flatten)
-* [flattenPerFunction](#flattenperfunction)
 * [flattenRecursive](#flattenrecursive)
 * [map](#map)
 * [mapWith](#mapwith)
@@ -55,7 +54,7 @@ const objects = arrayToObject(['a', 'b'], [[0, 1], [2, 3, 'a'], [4]])
 // objects is [{'a': 0, 'b': 1 }, {'a': 2, 'b': 3 }, {'a': 4, 'b': undefined }]
 ```
 
-Returns **Generator** for the sequence of Objects
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the sequence of Objects
 
 ## chunk
 
@@ -73,11 +72,11 @@ const a = chunk(2, [0, 1, 2, 3, 4, 5, 6])
 console.log([...a]) // prints [[0, 1], [2, 3], [4, 5], [6]]
 ```
 
-Returns **Generator** for the chunked sequence
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the chunked sequence
 
 ## filter
 
-Keeps item from input sequence when fn(item) returns truty. Remove items from input sequence when
+Keeps item from input sequence when fn(item) returns truthy. Remove items from input sequence when
 fn(item) returns !truthy.
 
 ### Parameters
@@ -93,12 +92,12 @@ const a = filter(isEvenNumber, [0, 1, 2, 3, 4, 5, 6])
 console.log([...a]) // prints even numbers [0, 2, 4, 6]
 ```
 
-Returns **Generator** for the filtered sequence
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the filtered sequence
 
 ## flatten
 
 Flattens a sequence of items one level deep. It does not flatten strings, even
-though they are iterable. Use FlattenPerFunction if you want to flatten strings.
+though they are iterable.
 
 ### Parameters
 
@@ -111,29 +110,7 @@ const a = flatten([[0, 1], [2, 3], [4, 5], [6]])
 console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6]
 ```
 
-Returns **Generator** for the flattened sequence
-
-## flattenPerFunction
-
-Flattens an input sequence as guided by the fn(item) return value. Both flatten and
-flattenRecursive provide examples for using this function.
-
-### Parameters
-
-- `fn` **[Function][2]** fn(item) returns Object, {iterate: true // or false, itemToYield: func(item) }
-- `iterable` **Iterable** the sequence to flatten
-
-### Examples
-
-```javascript
-// this example flattens any iterable, including strings, one level deep
-const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
-const input = [0, [1, 2, 3], [4, 5, 6], [['a', 'b'], 7], 8, 9]
-const a = flattenPerFunction(x => ({ iterate: isIterable(x), itemToYield: x }), input)
-console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, ['a', 'b'], 7, 8, 9]
-```
-
-Returns **Generator** for the flattened sequence
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the flattened sequence
 
 ## flattenRecursive
 
@@ -152,7 +129,7 @@ const a = flattenRecursive(input)
 console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 ```
 
-Returns **Generator** for the flattened sequence
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the flattened sequence
 
 ## map
 
@@ -170,16 +147,19 @@ const a = map(x => 2 * x, [0, 1, 2, 3])
 console.log([...a]) // prints [0, 2, 4, 6]
 ```
 
-Returns **Generator** for the mapped sequence
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the mapped sequence
 
 ## mapWith
 
 Map the input sequence to the output sequence with a generator that maps one iterator to another.
 
+This method exists solely so that ChainableIterable supports chaining for an arbitrary generator function.
+
 ### Parameters
 
-- `generatorFunction` **any** a generator function that takes the input iterable as a parameter
-- `iterable` **any** the input sequence
+- `generatorFunction` **[Function][2]** a function that returns an iterable object, and takes an iterable as a parameter.
+  Typically, this will be a generator function.
+- `iterable` **Iterable** the input sequence
 
 ### Examples
 
@@ -193,7 +173,7 @@ const a = mapWith(fn, [0, 1, 2, 3])
 console.log([...a]) // prints [0, 1, 4, 9]
 ```
 
-Returns **Generator** for the mapped sequence
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the mapped sequence
 
 ## nth
 
@@ -212,7 +192,7 @@ const a = nth(1, input)
 console.log([...a]) // prints [1, 3, 5]
 ```
 
-Returns **Generator** for the nth elements
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the nth elements
 
 ## pluck
 
@@ -231,7 +211,7 @@ const a = pluck('a', input)
 console.log([...a]) // prints [1, 3, 5]
 ```
 
-Returns **Generator** for the plucked items
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the plucked items
 
 ## reject
 
@@ -250,7 +230,7 @@ const a = reject(isEvenNumber, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 console.log([...a]) // prints [1, 3, 5, 7, 9]
 ```
 
-Returns **Generator** for the non-rejected items
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the non-rejected items
 
 ## take
 
@@ -268,7 +248,7 @@ const a = take(5, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 console.log([...a]) // prints [0, 1, 2, 3, 4]
 ```
 
-Returns **Generator** for the first n items
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the first n items
 
 ## takeWhile
 
@@ -286,7 +266,7 @@ const a = takeWhile(x => x != 4, [0, 1, 2, 3, 4, 5, 6])
 console.log([...a]) // prints [0, 1, 2, 3]
 ```
 
-Returns **Generator** for the selected items
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the selected items
 
 ## tap
 
@@ -305,7 +285,7 @@ const a = tap(console.log, [1, 2, 3, 4, 5])
 [...a] // prints [1, 2, 3, 4, 5]
 ```
 
-Returns **Generator** that is equivalent to the input iterable
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) that is equivalent to the input iterable
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 

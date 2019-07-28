@@ -1,24 +1,24 @@
 import tape from 'tape'
 import { makeChainableIterable } from '../src/makechainable.js'
-import * as Sequences from '../src/sequences.js'
-import * as Transforms from '../src/transforms.js'
-import * as Reducers from '../src/reducers.js'
+import * as generators from '../src/generators.js'
+import * as transforms from '../src/transforms.js'
+import * as reducers from '../src/reducers.js'
 
-// Create some shortened sets of sequences, transforms, and reducers
+// Create some shortened sets of generators, transforms, and reducers
 // to simplify testing.
-const sequences = {
-  concatenate: Sequences.concatenate,
-  range: Sequences.range
+const testGenerators = {
+  concatenate: generators.concatenate,
+  range: generators.range
 }
 
-const transformers = {
-  chunk: Transforms.chunk,
-  nth: Transforms.nth
+const testTranforms = {
+  chunk: transforms.chunk,
+  nth: transforms.nth
 }
 
-const reducers = {
-  reduce: Reducers.reduce,
-  toArray: Reducers.toArray
+const testReducers = {
+  reduce: reducers.reduce,
+  toArray: reducers.toArray
 }
 
 const makeTestRunner = (test) => (parameters) => {
@@ -37,7 +37,7 @@ const makeTestRunner = (test) => (parameters) => {
  * verify that the behavior of the generated methods is correct.
  */
 
-const chainable = makeChainableIterable(sequences, transformers, reducers)
+const chainable = makeChainableIterable(testGenerators, testTranforms, testReducers)
 // console.log([...Object.keys(chainable)])
 // console.log([...Object.keys(chainable.ChainableClass)])
 // console.log(chainable.ChainableClass.concatenate)

@@ -27,8 +27,10 @@ const collectExamples = function * (iterable) {
     }
     let exampleResult = exampleBlock.exec(line)
     if (collectingExample === false && exampleResult !== null) { // found example block start
-      example.code.push(line)
-      collectingExample = true
+      if (example.name !== '') {
+        example.code.push(line)
+        collectingExample = true
+      }
     } else {
       if (collectingExample === true && exampleResult !== null) { // found example block end
         example.code.push(line)
@@ -62,8 +64,7 @@ const replaceExamples = function * (replacementExamples, iterable) {
         isReplacement = true
         yield * replacmentExample.code // eat original block start, and replace it with entirety of replacement block
       } else {
-        // TODO: throw an exception to make documentation required
-        console.log(`no replacement for ==>${example.name}<==`)
+        // It is ok if there is no match because the *_head.md fragments also have examples
         yield line
       }
       collectingExample = true
@@ -131,7 +132,7 @@ async function generateChainableIterableDocumentation (head, sequencesDocumentat
         head,
         // need empty lines before and after !toc statement for markedpp to pick it up
         ['', '!toc (minlevel=2 level=3 omit="Table of Contents")', ''],
-        ['## Factory Methods', ' ', 'Factory methods for creating ChainableIterables.'],
+        ['## Generators', ' ', 'Static methods for creating ChainableIterables.'],
         sequencesDocumentation.map(indentHeadingsOneMoreLevel),
         ['## Transforms', ' ', 'Methods for transforming a sequence.'],
         transformsDocumentation.map(indentHeadingsOneMoreLevel),
@@ -154,12 +155,12 @@ async function generateChainableDocs (head, sequencesDocumentation, examples) {
       .concatenate(
         head,
         ['', '!toc (minlevel=2 level=3 omit="Table of Contents;Chainable As Function")', ''],
-        ['## Factory Methods', ' ', 'Factory methods for creating ChainableIterables.'],
+        ['## Generators', ' ', 'Static methods for creating ChainableIterables.'],
         sequencesDocumentation.map(indentHeadingsOneMoreLevel)
       )
       // TODO: change or add MDN links for types
       .reject(line => /^- {3}`iterable`/.exec(line) !== null) // strip 'iterable' parameter from all method comments
-      .map(line => line.replace('Returns **Generator**', 'Returns **ChainableIterable**'))
+      .map(line => line.replace('Returns **Generator**', 'Returns [ChainableIterable](ChainableIterable.md)'))
       .mapWith((line) => replaceExamples(examples, line))
       .toArray()
       .join('\n')
@@ -177,11 +178,22 @@ async function generateFunctionalDocs (headerFile, coreDocs, outputFile) {
         ['', '!toc (minlevel=2 level=2 omit="Usage;Table of Contents")', ''],
         coreDocs
       )
+      .map(line => {
+        return line.replace(
+          'Returns **Generator**',
+          `Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)`)
+      })
       .toArray()
       .join('\n')
   const doc = await addToc(withoutToc)
   await promises.writeFile(outputFile, doc, 'utf-8')
-} 
+}
+
+async function generateReadme (readmeFile) {
+  const readme = await promises.readFile(readmeFile, 'utf-8')
+  const doc = await addToc(readme)
+  await promises.writeFile(readmeFile, doc, 'utf-8')
+}
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
@@ -199,17 +211,18 @@ const main = async function () {
     const chainableIterableExamples = processExamplesTemplateWith(template, { ctor: 'ChainableIterable.from', static: 'ChainableIterable' })
     const chainableExamples = processExamplesTemplateWith(template, { ctor: 'chainable', static: 'chainable' })
 
-    const sequencesDocumentation = await docGenFor('src/sequences.js')
+    const generatorDocumentation = await docGenFor('src/generators.js')
     const transformsDocumentation = await docGenFor('src/transforms.js')
     const reducersDocumentation = await docGenFor('src/reducers.js')
     const makeChainableDocumentation = await docGenFor('src/makechainable.js')
 
-    await generateChainableIterableDocumentation(chainableIterableHead, sequencesDocumentation, transformsDocumentation, reducersDocumentation, chainableIterableExamples)
-    await generateChainableDocs(chainableHead, sequencesDocumentation, chainableExamples)
-    await generateFunctionalDocs('docparts/factories_head.md', sequencesDocumentation, 'docs/sequences.md')
+    await generateChainableIterableDocumentation(chainableIterableHead, generatorDocumentation, transformsDocumentation, reducersDocumentation, chainableIterableExamples)
+    await generateChainableDocs(chainableHead, generatorDocumentation, chainableExamples)
+    await generateFunctionalDocs('docparts/generators_head.md', generatorDocumentation, 'docs/generators.md')
     await generateFunctionalDocs('docparts/transforms_head.md', transformsDocumentation, 'docs/transforms.md')
     await generateFunctionalDocs('docparts/reducers_head.md', reducersDocumentation, 'docs/reducers.md')
     await generateFunctionalDocs('docparts/makechainable_head.md', makeChainableDocumentation, 'docs/makechainable.md')
+    await generateReadme('README.md')
   } catch (err) {
     console.error(err)
   }
