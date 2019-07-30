@@ -2,7 +2,7 @@ import tape from 'tape'
 import * as generators from '../src/generators.js'
 
 const makeTestRunner = (test) => (parameters) => {
-  let { name, actual, expected } = parameters
+  const { name, actual, expected } = parameters
   test.deepEqual(Array.from(actual), expected, name)
 }
 

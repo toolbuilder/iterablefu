@@ -3,17 +3,16 @@ import * as generators from '../src/generators.js'
 import * as transforms from '../src/transforms.js'
 
 const isEvenNumber = x => x % 2 === 0
-const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
 
 // The last parameter of all transforms is 'iterable'.
 // Effectively curry the transforms to make test parameters vs input iterable clearer
 const curried = {}
-for (let methodName in transforms) {
+for (const methodName in transforms) {
   curried[methodName] = (...args) => (iterable) => transforms[methodName](...args, iterable)
 }
 
 const makeTestRunner = (test) => (parameters) => {
-  let [testName, inputIterable, iterableFactory, expectedOutput] = parameters
+  const [testName, inputIterable, iterableFactory, expectedOutput] = parameters
   const iterable = iterableFactory(inputIterable)
   test.deepEqual(Array.from(iterable), expectedOutput, testName)
 }
@@ -26,10 +25,10 @@ tape('arrayToObject', test => {
       [['George', 22], ['Betty', 18], ['Grandpa', 89], ['Sally', 42]],
       curried.arrayToObject(['name', 'age']),
       [
-        { 'name': 'George', 'age': 22 },
-        { 'name': 'Betty', 'age': 18 },
-        { 'name': 'Grandpa', 'age': 89 },
-        { 'name': 'Sally', 'age': 42 }
+        { name: 'George', age: 22 },
+        { name: 'Betty', age: 18 },
+        { name: 'Grandpa', age: 89 },
+        { name: 'Sally', age: 42 }
       ]
     ],
     [
@@ -37,10 +36,10 @@ tape('arrayToObject', test => {
       [['George'], ['Betty', 18], ['Grandpa'], ['Sally', 42]],
       curried.arrayToObject(['name', 'age']),
       [
-        { 'name': 'George', 'age': undefined },
-        { 'name': 'Betty', 'age': 18 },
-        { 'name': 'Grandpa', 'age': undefined },
-        { 'name': 'Sally', 'age': 42 }
+        { name: 'George', age: undefined },
+        { name: 'Betty', age: 18 },
+        { name: 'Grandpa', age: undefined },
+        { name: 'Sally', age: 42 }
       ]
     ],
     [
@@ -48,10 +47,10 @@ tape('arrayToObject', test => {
       [['George', 22, 45], ['Betty', 18, 63], ['Grandpa', 89], ['Sally', 42]],
       curried.arrayToObject(['name', 'age']),
       [
-        { 'name': 'George', 'age': 22 },
-        { 'name': 'Betty', 'age': 18 },
-        { 'name': 'Grandpa', 'age': 89 },
-        { 'name': 'Sally', 'age': 42 }
+        { name: 'George', age: 22 },
+        { name: 'Betty', age: 18 },
+        { name: 'Grandpa', age: 89 },
+        { name: 'Sally', age: 42 }
       ]
     ]
   ].forEach(makeTestRunner(test))
@@ -154,7 +153,7 @@ tape('map', test => {
 })
 
 const mapWithGenerator = function * (iterable) {
-  for (let x of iterable) {
+  for (const x of iterable) {
     yield x * x
   }
 }

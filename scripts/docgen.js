@@ -16,16 +16,16 @@ dot.templateSettings = {
 }
 
 const collectExamples = function * (iterable) {
-  let namefinder = /^### ([a-zA-Z0-9]+)/
-  let exampleBlock = /```/
+  const namefinder = /^### ([a-zA-Z0-9]+)/
+  const exampleBlock = /```/
   let collectingExample = false
   let example = { name: '', code: [] }
-  for (let line of iterable) {
-    let nameResult = namefinder.exec(line)
+  for (const line of iterable) {
+    const nameResult = namefinder.exec(line)
     if (nameResult !== null) {
       example.name = nameResult[1]
     }
-    let exampleResult = exampleBlock.exec(line)
+    const exampleResult = exampleBlock.exec(line)
     if (collectingExample === false && exampleResult !== null) { // found example block start
       if (example.name !== '') {
         example.code.push(line)
@@ -47,17 +47,17 @@ const collectExamples = function * (iterable) {
 }
 
 const replaceExamples = function * (replacementExamples, iterable) {
-  let namefinder = /^### ([a-zA-Z0-9]+)/
-  let exampleBlock = /```/
+  const namefinder = /^### ([a-zA-Z0-9]+)/
+  const exampleBlock = /```/
   let collectingExample = false
   let example = { name: '' }
   let isReplacement = false
-  for (let line of iterable) {
-    let nameResult = namefinder.exec(line)
+  for (const line of iterable) {
+    const nameResult = namefinder.exec(line)
     if (nameResult !== null) {
       example.name = nameResult[1]
     }
-    let exampleResult = exampleBlock.exec(line)
+    const exampleResult = exampleBlock.exec(line)
     if (collectingExample === false && exampleResult !== null) { // found example block start
       const replacmentExample = replacementExamples[example.name]
       if (replacmentExample) {

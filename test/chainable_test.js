@@ -10,7 +10,7 @@ import {
 } from '../src/chainable.js'
 
 const makeTestRunner = (test) => (parameters) => {
-  let { name, actual, expected } = parameters
+  const { name, actual, expected } = parameters
   test.deepEqual(actual, expected, name)
 }
 

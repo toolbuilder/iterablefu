@@ -14,7 +14,7 @@
  */
 export const forEach = (fn, iterable) => {
   let index = 0
-  for (let item of iterable) {
+  for (const item of iterable) {
     fn(item, index++)
   }
 }
@@ -32,7 +32,7 @@ export const forEach = (fn, iterable) => {
  * const sum = reduce(add, 0, [0, 1, 2, 3, 4]) // sum === 10
  */
 export const reduce = (fn, accumulator, iterable) => {
-  for (let item of iterable) {
+  for (const item of iterable) {
     accumulator = fn(accumulator, item)
   }
   return accumulator

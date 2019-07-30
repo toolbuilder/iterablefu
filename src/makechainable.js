@@ -15,20 +15,21 @@ export const makeChainableClass = (generators, transforms, reducers) => {
     constructor (iterable) {
       this.chainedIterable = iterable
     }
+
     * [Symbol.iterator] () {
       yield * this.chainedIterable
     }
   }
 
   // Dynamically add static Sequence methods to class
-  for (let methodName in generators) {
+  for (const methodName in generators) {
     Chainable[methodName] = function (...args) {
       return new Chainable(generators[methodName](...args))
     }
   }
 
   // Dynamically add Transform methods to class
-  for (let methodName in transforms) {
+  for (const methodName in transforms) {
     Chainable.prototype[methodName] = function (...args) {
       this.chainedIterable = transforms[methodName](...args, this.chainedIterable)
       return this
@@ -36,7 +37,7 @@ export const makeChainableClass = (generators, transforms, reducers) => {
   }
 
   // Dynamically add Reducer methods to class
-  for (let methodName in reducers) {
+  for (const methodName in reducers) {
     Chainable.prototype[methodName] = function (...args) {
       return reducers[methodName](...args, this.chainedIterable)
     }
@@ -63,7 +64,7 @@ export const makeChainableIterable = (generators, transforms, reducers) => {
   ChainableIterable.ChainableIterable = ChainableClass // provided to support testing
 
   // Dynamically add static sequence generator methods to class
-  for (let methodName in generators) {
+  for (const methodName in generators) {
     ChainableIterable[methodName] = function (...args) {
       return ChainableClass[methodName](...args)
     }

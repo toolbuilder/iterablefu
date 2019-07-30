@@ -18,10 +18,10 @@ import { zipAll } from './generators.js'
  * // objects is [{'a': 0, 'b': 1 }, {'a': 2, 'b': 3 }, {'a': 4, 'b': undefined }]
  */
 export const arrayToObject = function (propertyNames, iterable) {
-  let fn = (iterableElement) => {
+  const fn = (iterableElement) => {
     const outputObject = {}
     const pairs = zipAll(propertyNames, iterableElement)
-    for (let [ propertyName, value ] of pairs) {
+    for (const [propertyName, value] of pairs) {
       if (propertyName === undefined) continue
       outputObject[propertyName] = value
     }
@@ -43,7 +43,7 @@ export const arrayToObject = function (propertyNames, iterable) {
  */
 export const chunk = function * (n, iterable) {
   let accumulator = []
-  for (let item of iterable) {
+  for (const item of iterable) {
     accumulator.push(item)
     if (accumulator.length === n) {
       yield accumulator
@@ -68,7 +68,7 @@ export const chunk = function * (n, iterable) {
  * console.log([...a]) // prints even numbers [0, 2, 4, 6]
  */
 export const filter = function * (fn, iterable) {
-  for (let value of iterable) {
+  for (const value of iterable) {
     if (fn(value) === true) {
       yield value
     }
@@ -92,7 +92,7 @@ const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
  * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6]
  */
 export const flatten = function * (iterable) {
-  for (let value of iterable) {
+  for (const value of iterable) {
     if (!isString(value) && isIterable(value)) {
       yield * value
     } else {
@@ -113,7 +113,7 @@ export const flatten = function * (iterable) {
  * console.log([...a]) // prints [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
  */
 export const flattenRecursive = function * (iterable) {
-  for (let value of iterable) {
+  for (const value of iterable) {
     if (!isString(value) && isIterable(value)) {
       yield * flattenRecursive(value)
     } else {
@@ -133,7 +133,7 @@ export const flattenRecursive = function * (iterable) {
  * console.log([...a]) // prints [0, 2, 4, 6]
  */
 export const map = function * (fn, iterable) {
-  for (let value of iterable) {
+  for (const value of iterable) {
     yield fn(value)
   }
 }
@@ -238,7 +238,7 @@ export const take = function * (n, iterable) {
  * console.log([...a]) // prints [0, 1, 2, 3]
  */
 export const takeWhile = function * (fn, iterable) {
-  for (let item of iterable) {
+  for (const item of iterable) {
     if (fn(item) !== true) break
     yield item
   }

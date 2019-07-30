@@ -8,9 +8,9 @@
     "documentation": "^12.0.3",
     "dot": "^1.1.2",
     "markedpp": "^1.0.1",
-    "npm-run-all": "^4.1.5",
     "rollup": "^1.17.0",
     "rollup-plugin-terser": "^5.1.1",
+    "standard": "^13.1.0",
     "tap-nirvana": "^1.1.0",
     "tape": "^4.11.0"
   },
@@ -22,6 +22,7 @@
   "keywords": [
     "iterable",
     "iterator",
+    "generator",
     "chainable",
     "esm",
     "functional",
@@ -30,10 +31,14 @@
   "main": "index.js",
   "module": "src/chainable.js",
   "name": "iterablefu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toolbuilder/iterablefu"
+  },
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "docs": "node -r esm scripts/docgen.js",
-    "test": "tape -r esm test/*_test.js | tap-nirvana"
+    "test": "standard && tape -r esm test/*_test.js | tap-nirvana"
   },
   "version": "0.3.0"
 }

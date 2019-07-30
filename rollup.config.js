@@ -19,6 +19,6 @@ export default [
       format: 'umd',
       name: 'iterablefu'
     },
-    plugins: [ terser() ]
+    plugins: [terser()]
   }
 ]

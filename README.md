@@ -36,7 +36,7 @@
 
 ## Installation
 
-Use any Github or npm package installation method you prefer. This project uses [pnpm](https://github.com/pnpm/pnpm), but you can use npm too.
+Use any Github or npm package installation method you prefer.
 
 ```bash
 npm install --save iterablefu
@@ -203,11 +203,12 @@ Streams are another alternative. They provide backpressure, and are more special
 ## Alternatives
 
 There are lots of alternatives:
-- [wu](https://github.com/fitzgen/wu.js) - has many more methods than `IterableFu`. Does not use ES6 modules.
-- [itiri](https://github.com/labs42io/itiriri) - many functions that force conversion to array. Typescript.
-- [lazy.js](https://github.com/dtao/lazy.js/) - more methods, does not use generators
-- [linq.js](https://github.com/mihaifm/linq) - LINQ (a .NET library) for JavaScript
-- [GenSequence](https://github.com/Jason3S/GenSequence) - similar to `IterableFu`. Typescript.
+
+* [wu](https://github.com/fitzgen/wu.js) - has many more methods than `IterableFu`. Does not use ES6 modules.
+* [itiri](https://github.com/labs42io/itiriri) - many functions that force conversion to array. Typescript.
+* [lazy.js](https://github.com/dtao/lazy.js/) - more methods, does not use generators
+* [linq.js](https://github.com/mihaifm/linq) - LINQ (a .NET library) for JavaScript
+* [GenSequence](https://github.com/Jason3S/GenSequence) - similar to `IterableFu`. Typescript.
 
 ... and many more.
 
@@ -215,11 +216,11 @@ There are lots of alternatives:
 
 Contributions are welcome. Please create a pull request.
 
-Coding standard is [standard](https://standardjs.com/), version 12.0.1. Currently using the editor to validate.
+Coding standard is [standard](https://standardjs.com/), version 13.1.0.
 
 ## Issues
 
-This project uses Github issues: <https://github.com/toolbuilder/iterablefu/issues/new>
+This project uses Github issues.
 
 ## License
 
