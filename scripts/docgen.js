@@ -1,7 +1,7 @@
-import { promises } from 'fs' // arghh, this is experimental?
+import { promises } from 'fs'
 import dot from 'dot'
 import { chainable } from '../src/chainable.js'
-import documentation from 'documentation' // JSDoc to weird Objects, to markdown
+import documentation from 'documentation'
 import markedpp from 'markedpp'
 
 const documentationOptions = {
@@ -139,7 +139,6 @@ async function generateChainableIterableDocumentation (head, sequencesDocumentat
         ['## Reducers', ' ', 'Methods for reducing a sequence to a single value.'],
         reducersDocumentation.map(indentHeadingsOneMoreLevel)
       )
-      // TODO: change or add MDN links for types
       .reject(line => /^- {3}`iterable`/.exec(line) !== null) // strip 'iterable' parameter from all method comments
       .map(line => line.replace('Returns **Generator**', 'Returns **ChainableIterable**'))
       .mapWith((line) => replaceExamples(examples, line))
@@ -158,7 +157,6 @@ async function generateChainableDocs (head, sequencesDocumentation, examples) {
         ['## Generators', ' ', 'Static methods for creating ChainableIterables.'],
         sequencesDocumentation.map(indentHeadingsOneMoreLevel)
       )
-      // TODO: change or add MDN links for types
       .reject(line => /^- {3}`iterable`/.exec(line) !== null) // strip 'iterable' parameter from all method comments
       .map(line => line.replace('Returns **Generator**', 'Returns [ChainableIterable](ChainableIterable.md)'))
       .mapWith((line) => replaceExamples(examples, line))
@@ -194,13 +192,6 @@ async function generateReadme (readmeFile) {
   const doc = await addToc(readme)
   await promises.writeFile(readmeFile, doc, 'utf-8')
 }
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
-
-// TODO: move to ./scripts, and doc frags to ./docparts
-// TODO: generate functional documentation
-// TODO: can I put doc heads in implementation files??? Class (or module) level docs???
 
 const main = async function () {
   try {

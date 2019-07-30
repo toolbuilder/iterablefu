@@ -4,13 +4,12 @@
   },
   "description": "Small (1.2kb gz), set of functions like range, map, reduce, filter, zip, for iterable objects.",
   "devDependencies": {
-    "@babel/core": "^7.5.0",
     "@babel/plugin-transform-async-to-generator": "^7.5.0",
-    "documentation": "^11.0.1",
+    "documentation": "^12.0.3",
     "dot": "^1.1.2",
     "markedpp": "^1.0.1",
     "npm-run-all": "^4.1.5",
-    "rollup": "^1.16.6",
+    "rollup": "^1.17.0",
     "rollup-plugin-terser": "^5.1.1",
     "tap-nirvana": "^1.1.0",
     "tape": "^4.11.0"

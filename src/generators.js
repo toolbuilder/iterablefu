@@ -8,7 +8,7 @@
  * console.log([...generator]) // prints [0, 1, 2, 3, 4]
  */
 export const concatenate = function * (...iterables) {
-  for (let iterable of iterables) {
+  for (const iterable of iterables) {
     yield * iterable
   }
 }
@@ -139,7 +139,7 @@ export const repeatIterable = function * (n, repeatableIterable) {
  */
 export const zip = function * (...iterables) {
   const isDone = (nextResults) => nextResults.reduce((done, nextResult) => done || nextResult.done, false)
-  let iterators = iterables.map(x => x[Symbol.iterator]())
+  const iterators = iterables.map(x => x[Symbol.iterator]())
   let nextResults = iterators.map(i => i.next())
   while (!isDone(nextResults)) {
     yield nextResults.map(result => result.value)
@@ -163,7 +163,7 @@ export const zip = function * (...iterables) {
  */
 export const zipAll = function * (...iterables) {
   const isDone = (nextResults) => nextResults.reduce((done, nextResult) => done && nextResult.done, true)
-  let iterators = iterables.map(x => x[Symbol.iterator]())
+  const iterators = iterables.map(x => x[Symbol.iterator]())
   let nextResults = iterators.map(i => i.next())
   while (!isDone(nextResults)) {
     yield nextResults.map(result => result.value)

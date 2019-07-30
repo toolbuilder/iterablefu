@@ -38,13 +38,6 @@ const makeTestRunner = (test) => (parameters) => {
  */
 
 const chainable = makeChainableIterable(testGenerators, testTranforms, testReducers)
-// console.log([...Object.keys(chainable)])
-// console.log([...Object.keys(chainable.ChainableClass)])
-// console.log(chainable.ChainableClass.concatenate)
-// console.log([...chainable.concatenate([1, 2, 3])])
-
-// TODO: test special add in functions 'from' and 'with', and consider putting them in the proper places
-// TODO: consider putting 'chainable' ctor in proper place too? Shouldn't it be 'from' like Array.from ?
 
 tape('sequences', test => {
   [
