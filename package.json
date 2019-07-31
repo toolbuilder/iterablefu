@@ -33,12 +33,12 @@
   "name": "iterablefu",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toolbuilder/iterablefu"
+    "url": "https://github.com/toolbuilder/iterablefu"
   },
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "docs": "node -r esm scripts/docgen.js",
     "test": "standard && tape -r esm test/*_test.js | tap-nirvana"
   },
-  "version": "0.3.0"
+  "version": "0.3.1"
 }
