@@ -4,7 +4,7 @@ export default [
   {
     input: 'src/chainable.js',
     output: {
-      file: 'bundles/iterablefu.umd.js',
+      file: 'umd/iterablefu.umd.js',
       sourcemap: true,
       format: 'umd',
       name: 'iterablefu'
@@ -14,7 +14,7 @@ export default [
   {
     input: 'src/chainable.js',
     output: {
-      file: 'bundles/iterablefu.umd.min.js',
+      file: 'umd/iterablefu.umd.min.js',
       sourcemap: true,
       format: 'umd',
       name: 'iterablefu'

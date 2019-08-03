@@ -62,6 +62,21 @@ If you want the functional API, use this import.
 import { generators, transforms, reducers } from 'iterablefu'
 ```
 
+Access the latest UMD package from [unpkg](https://unpkg.com) like this:
+
+```html
+<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.min.js"></script>
+```
+
+Or for the full version:
+
+```html
+<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.js"></script>
+```
+
+Both packages create a global variable `iterablefu`.
+
+
 ## API
 
 Most people will want to use the chainable factory class.

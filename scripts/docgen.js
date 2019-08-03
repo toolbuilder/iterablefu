@@ -195,6 +195,7 @@ async function generateReadme (readmeFile) {
 
 const main = async function () {
   try {
+    await promises.mkdir('docs', { recursive: true })
     const chainableIterableHead = await loadHeader('docparts/ChainableIterable_head.md')
     const chainableHead = await loadHeader('docparts/chainable_head.md')
     const template = await promises.readFile('docparts/chainable_examples.md', 'utf-8')
