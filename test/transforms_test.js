@@ -231,6 +231,18 @@ tape('take', test => {
       generators.range(10),
       curried.take(5),
       Array.from(generators.range(5))
+    ],
+    [
+      'takes entire iterable if less than n elements',
+      generators.range(3),
+      curried.take(5),
+      Array.from(generators.range(3))
+    ],
+    [
+      'handles zero length iterable',
+      [],
+      curried.take(5),
+      []
     ]
   ].forEach(makeTestRunner(test))
   test.end()
