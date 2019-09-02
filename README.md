@@ -2,18 +2,16 @@
 
 `IterableFu` is a small (1.2kb minimized and gzipped) library of functions like range, map, reduce, filter, zip, for iterable objects.
 
-`IterableFu` also provides a chainable iterable to make it easy to chain transform and reduce methods together. Since chainable classes can be a challenge to maintain and extend, `IterableFu` provides a factory that creates the core chainable class, and that makes it easy to build your own custom chainable iterables.
+`IterableFu` has a chainable class to make it easy to chain iterable transforms. There is a chainable class factory
+[makeChainableIterable](docs/makechainable.md), so you easily can add methods, or reduce bundle size.
 
 ## Features
 
-* Chainable: `chainable([0, 1, 2]).map(x => 2*x).toArray()`
-* Works with your generators (and iterables): `chainable.from(yourGenerator).mapWith(yourTransformGenerator)`
-* Customizable [makeChainableIterable](docs/makechainable.md)
-* Functional API takes data last, so you can curry, pipe and compose with your functional library
-* Written in pure ES6 javascript using ES6 modules. Documentation build scripts use ES7 async/await.
-* Browser version has no dependencies.
-* Build produces minified UMD modules using [Rollup](https://github.com/rollup/rollup).
-* Node package uses [esm](https://github.com/standard-things/esm) for the CommonJS interface.
+* Chainable: `chainable([0, 1, 2]).map(x => 2*x).toArray()`.
+* Works with your generators (and iterables): `chainable(yourGenerator()).mapWith(yourTransformGenerator)`.
+* Customizable [makeChainableIterable](docs/makechainable.md), to add methods or reduce bundle sizes.
+* Functional API takes data last, so you can curry, pipe and compose with your functional library.
+* Written in ES6 javascript using ES6 modules.
 
 ## Table of Contents
 
@@ -26,6 +24,7 @@
   * [Basics](#basics)
   * [One Time Use](#one-time-use)
   * [Iterablefu and Your Generators](#iterablefu-and-your-generators)
+* [Smaller Bundles](#smaller-bundles)
 * [When To Use](#when-to-use)
 * [Alternatives](#alternatives)
 * [Contributing](#contributing)
@@ -36,17 +35,18 @@
 
 ## Installation
 
-Use any Github or npm package installation method you prefer.
-
 ```bash
 npm install --save iterablefu
 ```
 
-Browser bundles are built in the bundles directory.
+Access UMD packages and map files from [unpkg](https://unpkg.com).
 
-```bash
-npm run build
+```html
+<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.min.js"></script>
+<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.js"></script>
 ```
+
+Both UMD packages create a global variable `iterablefu`.
 
 ## Getting Started
 
@@ -62,24 +62,26 @@ If you want the functional API, use this import.
 import { generators, transforms, reducers } from 'iterablefu'
 ```
 
-Access the latest UMD package from [unpkg](https://unpkg.com) like this:
+You may also specify the ES modules directly to reduce bundle sizes. See more in the
+[Smaller Bundles](#smaller-bundles) section.
 
-```html
-<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.min.js"></script>
+The most used methods are probably: `zip`, `zipAll`, `filter`, `flatten`, `map`, and `reduce`.
+The documentation has an example for each method:
+
+* [chainable](docs/chainable.md)- Starts the chain and produces a ChainableIterable
+* [ChainableIterable](docs/ChainableIterable.md) - For all the transforms and reducer methods
+
+```javascript
+import { chainable } from 'iterablefu'
+
+const iterable = chainable([1, 2, 3, 4, 5, 6]) // <-- throw any iterable in here
+  .filter(x => x % 2 === 0) // filters out odd numbers
+  .map(x => 2 * x)
+
+console.log(Array.from(iterable)) // prints [4, 8, 12]
 ```
-
-Or for the full version:
-
-```html
-<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.js"></script>
-```
-
-Both packages create a global variable `iterablefu`.
-
 
 ## API
-
-Most people will want to use the chainable factory class.
 
 * Chainable API
   * [Chainable factory](docs/chainable.md), builder function for ChainableIterable, [**start here**](docs/chainable.md)
@@ -130,24 +132,16 @@ const c = chainable.range(2, 5).toArray() // c has the value [2, 3, 4, 5, 6]
 
 ### One Time Use
 
-Except for one method, `repeatIterable`, `IterableFu` only supports one-time use. This matches the
-intended use of the library, but also reflects what happens when you use generator functions with the library.
+Except for one method, `repeatIterable`, `IterableFu` only supports one-time iteration. This is because
+iterators cannot be reused once done.
 
-[Generator functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Generator_functions) create [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) objects which are both *iterable* (have `[Symbol.iterator]`) and *iterators* (have `next()`).
-
-Iterators can only be used once. So when you call a generator function to provide an iterable to `IterableFu`, you are
-passing a Generator object that can only be iterated once.
-
-Compare this to Array. When you call `Array[Symbol.iterator]()` you get a one-time use Generator. But when you call
-`Array[Symbol.iterator]()` again, you get a different one-time use Generator object. This is why you can iterate over
-iterable objects like Array more than once.
+An iterable class like Array, can be iterated more than once because it produces a new iterator for each iteration.
 
 ```javascript
 // IterableFu produces one-time use sequences
 const a = chainable.range(5)
-console.log([...a]) // print [0, 1, 2, 3, 4]
-console.log([...a]) // prints [] because the first log statement used the iterable
-// This is not a bug, chainable works exactly like generator functions because it uses them internally
+console.log([...a]) // print [0, 1, 2, 3, 4], iterator is now done
+console.log([...a]) // prints [] because the iterator is already done
 ```
 
 To reuse an `IterableFu` chain, wrap it in a function so that a new Generator object is returned each time it is called.
@@ -156,7 +150,7 @@ To reuse an `IterableFu` chain, wrap it in a function so that a new Generator ob
 const fn = () => chainable.range(5)
 // Note the function calls below...
 console.log([...fn()]) // prints [0, 1, 2, 3, 4]
-console.log([...fn()]) // prints [0, 1, 2, 3, 4]
+console.log([...fn()]) // prints [0, 1, 2, 3, 4] because a new iterator was used
 ```
 
 ### Iterablefu and Your Generators
@@ -164,7 +158,7 @@ console.log([...fn()]) // prints [0, 1, 2, 3, 4]
 To use a generator function that creates a sequence, use [chainable](docs/chainable.md) as a function.
 
 ```javascript
-// A simple generator function as an example
+// A simple generator function
 const fn = function * (length) {
   for (let i = 0; i < length; i++) {
     yield i
@@ -187,33 +181,55 @@ const fn = function * (n, iterable) {
 const input = [0, 1, 2, 3, 4]
 // mapWith only accepts generator functions that have one parameter: iterable.
 // If your generator takes additional parameters beyond iterable, you need
-// to wrap it with another function that takes only one parameter.
+// to wrap it with another function that takes only one parameter. Like this:
 const wrapper = (iterable) => fn(3, iterable)
 const a = chainable(input).mapWith(wrapper).toArray()
 console.log(a) // prints [0, 3, 6, 9, 12]
 ```
 
-## When To Use
+## Smaller Bundles
 
-Iterables shine when you need to process a sequence of data synchronously and maintain state while doing so. For example, `IterableFu` dynamically creates the primary class [chainable](docs/chainable.md), so there's no place to put the JSDoc
-comments. So `IterableFu` generates the documentation by processing the functional API documentation: removing unused parameters, changing indentation, replacing comments, and such. It does this using a chain of `IterableFu` transforms.
-
-A google search on javascript generators and iterables will turn up many more examples.
-
-If you're performing simple transformations on small amounts of data, then the built in transforms such as [Array.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) will probably work just as well. Slightly more complicated would be [lodash](https://github.com/lodash/lodash) or [underscore](https://github.com/jashkenas/underscore). These approaches create a new Array for each transformation, so can be expensive on large amounts of data.
-
-Iterables provide synchronous pull behavior - the data source is synchronous, and the caller pulls data from the source as needed. Iterables are good if you already have the data you want to transform in memory. If asynchronous push fits
-your needs better, an Observable library such as [Kefir](https://github.com/kefirjs/kefir) or [RxJs](https://github.com/reactivex/rxjs) would be preferable. Or you could use async generators.
-
-You can use this library with Observable libraries because they all implement `Observable.from(iterable)`. If you're already comfortable with the Observable model: Observable, Observer, Subscriber, cold observables, hot observables, etc. Then you can probably get by without `IterableFu`.
+You can reduce bundle size by importing the generators and function you want to use directly.
 
 ```javascript
-// Converting from IterableFu to Observable
-const iterable = chainable.range(5)
-const observable = Observable.from(iterable)
+import { zip, zipAll } from 'iterablefu/src/generators.js'
+import { filter, flatten, map } from 'iterablefu/src/transfroms.js'
+import { reduce } from 'iterablefu/src/reducers.js'
 ```
 
-Streams are another alternative. They provide backpressure, and are more specialized and capable for input/output use cases. Streams are only now being supported by browsers, and they are significantly harder to understand than iterables.
+If you want a reduced size chainable object, use [makeChainableIterable](docs/makechainable.md) with the
+directly imported functions. Customization is covered more completely in the `makeChainableIterable` docs.
+
+```javascript
+// using the imports from above
+import { makeChainableIterable } from 'iterablefu/src/makechainable.js'
+const generators = { zip, zipAll }
+const transforms = { filter, flatten, map }
+const reducers = { reduce }
+const chainable = makeChainableIterable(generators, transforms, reducers)
+```
+
+## When To Use
+
+Iterables are great if you write code that supports any iterable container, like Array, Set, etc. A method
+like this, `const writeCsv = async (records, writeStream) => { /***/ }` can be more flexible if it accepts an
+iterator rather than just an Array.
+
+Iterators also support generators, which make it much easier to maintain state while iterating.
+
+If you're performing simple transformations on small amounts of data, then the built in transforms such as [Array.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) will probably work just as well. Slightly more complicated would be [lodash](https://github.com/lodash/lodash) or [underscore](https://github.com/jashkenas/underscore). These approaches create a new Array for each transformation, and can be expensive on large amounts of data.
+
+Iterables require a synchronous data source. So asynchronous code needs a different approach. I prefer async generators and
+iterators to Observables.
+
+* Async iterables are literally iterables that return Promises, so the mental model is simpler.
+* The async iterator protocol automatically applies back pressure. Compare to [this](https://codeburst.io/a-look-at-back-pressure-and-its-handling-in-rxjs-5bc8f04a2e8f) for RxJs.
+* They have direct support in the language: async generators, `yield *`, async functions, Promises, etc.
+* They work directly with synchronous iterables as input
+
+You can use `Iterablefu` with Observable libraries because `Observable.from(iterable)` is part of the [psuedo-standard](https://github.com/tc39/proposal-observable). If you're already comfortable with the Observable model: Observable, Observer, Subscriber, cold observables, hot observables, etc., then you can get by without `IterableFu`.
+
+Streams are another alternative. Standard browser support is coming. Streams provide backpressure. They are more specialized and capable for input/output use cases like character encoding, and Object to character conversions. The [mississippi](https://github.com/maxogden/mississippi) library makes stream use significantly easier.
 
 ## Alternatives
 
