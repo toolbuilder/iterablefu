@@ -56,6 +56,31 @@ export const chunk = function * (n, iterable) {
 }
 
 /**
+ * Execute fn(previous, current) and yields the result for each pair.
+ * Would be useful for calculating time differences between timestamps.
+ *
+ * @param {Function} fn - fn(previous, current), yielding return value
+ * @param {Iterable} iterable - the input iterable
+ * @returns {Generator} - if input has two or more items, output sequence
+ * is one shorter than input sequence. Otherwise, no items are output.
+ * @example
+ * const a = diff((n, m) => m - n, [0, 1, 2, 3, 4])
+ * console.log([...a]) // prints [1, 1, 1, 1]
+ */
+export const diff = function * (fn, iterable) {
+  const iterator = iterable[Symbol.iterator]()
+  let { value, done } = iterator.next()
+  let previousValue = value;
+  // it's ok to call iterator.next after it is done
+  ({ value, done } = iterator.next())
+  while (!done) {
+    yield fn(previousValue, value)
+    previousValue = value;
+    ({ value, done } = iterator.next())
+  }
+}
+
+/**
  * Keeps item from input sequence when fn(item) returns truthy. Remove items from input sequence when
  * fn(item) returns !truthy.
  *

@@ -40,6 +40,7 @@ console.log(a) // prints [1, 2, 3]
 * [Transforms](#transforms)
   * [arrayToObject](#arraytoobject)
   * [chunk](#chunk)
+  * [diff](#diff)
   * [filter](#filter)
   * [flatten](#flatten)
   * [flattenRecursive](#flattenrecursive)
@@ -274,6 +275,26 @@ console.log(a) // prints [[0, 1], [2, 3], [4, 5], [6]]
 ```
 
 Returns **ChainableIterable** for the chunked sequence
+
+### diff
+
+Execute fn(previous, current) and yield the result for each pair.
+Would be useful for calculating time differences between timestamps.
+
+#### Parameters
+
+- `fn` **[Function][2]** fn(previous, current), yielding return value
+
+#### Examples
+
+```javascript
+const input = [0, 1, 2, 3, 4]
+const a = ChainableIterable.from(input).diff((n, m) => m - n).toArray()
+console.log(a)  // prints [1, 1, 1, 1]
+```
+
+Returns **ChainableIterable** if input has more than two items, output sequence
+is one shorter than input sequence. Otherwise, no items are output.
 
 ### filter
 

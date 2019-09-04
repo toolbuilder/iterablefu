@@ -16,6 +16,7 @@ console.log(...transforms.map(x => 2 * x, [0, 1, 2])) // prints 0 2 4
 
 * [arrayToObject](#arraytoobject)
 * [chunk](#chunk)
+* [diff](#diff)
 * [filter](#filter)
 * [flatten](#flatten)
 * [flattenRecursive](#flattenrecursive)
@@ -73,6 +74,26 @@ console.log([...a]) // prints [[0, 1], [2, 3], [4, 5], [6]]
 ```
 
 Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) for the chunked sequence
+
+## diff
+
+Execute fn(previous, current) and yield the result for each pair.
+Would be useful for calculating time differences between timestamps.
+
+### Parameters
+
+- `fn` **[Function][2]** fn(previous, current), yielding return value
+- `iterable` **Iterable** the input iterable
+
+### Examples
+
+```javascript
+const a = diff((n, m) => m - n, [0, 1, 2, 3, 4])
+console.log([...a]) // prints [1, 1, 1, 1]
+```
+
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) if input has more than two items, output sequence
+is one shorter than input sequence. Otherwise, no items are output.
 
 ## filter
 

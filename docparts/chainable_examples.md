@@ -100,6 +100,14 @@ const a = {{=it.ctor}}(input).chunk(2).toArray()
 console.log(a) // prints [[0, 1], [2, 3], [4, 5], [6]]
 ```
 
+### diff
+
+```javascript
+const input = [0, 1, 2, 3, 4]
+const a = {{=it.ctor}}(input).diff((n, m) => m - n).toArray()
+console.log(a)  // prints [1, 1, 1, 1]
+```
+
 ### filter
 
 ```javascript

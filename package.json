@@ -52,5 +52,5 @@
     "test": "npm-run-all --serial standard test:tape",
     "test:tape": "tape -r esm test/*_test.js | tap-nirvana"
   },
-  "version": "0.3.2"
+  "version": "0.4.0-rc0"
 }

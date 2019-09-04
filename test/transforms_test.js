@@ -82,6 +82,32 @@ tape('chunk', test => {
   test.end()
 })
 
+tape('diff', test => {
+  [
+    // format: [testName, inputIterable, curried transform, expectedOutput]
+    [
+      'calls fn(previous, current) for each item pair',
+      generators.range(5),
+      curried.diff((n, m) => m - n),
+      [1, 1, 1, 1]
+    ],
+    [
+      'zero length input returns zero length output',
+      [],
+      curried.diff((n, m) => m - n),
+      []
+    ],
+    [
+      'one input value returns zero length output',
+      [1],
+      curried.diff((n, m) => m - n),
+      []
+    ]
+
+  ].forEach(makeTestRunner(test))
+  test.end()
+})
+
 tape('filter', test => {
   [
     // format: [testName, inputIterable, curried transform, expectedOutput]
