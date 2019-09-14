@@ -25,6 +25,7 @@
   * [One Time Use](#one-time-use)
   * [Iterablefu and Your Generators](#iterablefu-and-your-generators)
 * [Smaller Bundles](#smaller-bundles)
+* [Customization](#customization)
 * [When To Use](#when-to-use)
 * [Alternatives](#alternatives)
 * [Contributing](#contributing)
@@ -114,7 +115,7 @@ const answer =
 console.log(answer) // prints 20
 ```
 
-Some generators can convert Arrays into chainable iterables.
+Some generators can convert Arrays or any other iterable into chainable iterables.
 
 ```javascript
 const d = chainable([1, 2, 3]) // makes a chainable version of [1, 2, 3]
@@ -209,10 +210,14 @@ const reducers = { reduce }
 const chainable = makeChainableIterable(generators, transforms, reducers)
 ```
 
+## Customization
+
+Customization is covered  in the [makeChainableIterable](docs/makechainable.md) documentation.
+
 ## When To Use
 
 Iterables are great if you write code that supports any iterable container, like Array, Set, etc. A method
-like this, `const writeCsv = async (records, writeStream) => { /***/ }` can be more flexible if it accepts an
+like this, `const writeCsv = async (records, writeStream) => { /***/ }` can be more flexible if `records` is an
 iterator rather than just an Array.
 
 Iterators also support generators, which make it much easier to maintain state while iterating.
@@ -247,7 +252,10 @@ There are lots of alternatives:
 
 Contributions are welcome. Please create a pull request.
 
-Coding standard is [standard](https://standardjs.com/), version 13.1.0.
+I use [pnpm](https://pnpm.js.org/) instead of npm.
+
+I've been using [Verdaccio](https://github.com/verdaccio/verdaccio) for testing release candidates. But published
+package testing is not yet automated. Neither is browser testing. Lots of room for improvement here.
 
 ## Issues
 

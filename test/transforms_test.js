@@ -120,7 +120,7 @@ tape('filter', test => {
     [
       'passes all elements when function only returns truthy values',
       generators.range(10),
-      curried.filter(x => true),
+      curried.filter(() => true),
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     ]
   ].forEach(makeTestRunner(test))

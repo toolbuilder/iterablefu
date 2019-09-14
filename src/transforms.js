@@ -70,13 +70,12 @@ export const chunk = function * (n, iterable) {
 export const diff = function * (fn, iterable) {
   const iterator = iterable[Symbol.iterator]()
   let { value, done } = iterator.next()
-  let previousValue = value;
-  // it's ok to call iterator.next after it is done
-  ({ value, done } = iterator.next())
+  let previousValue = value
+  ;({ value, done } = iterator.next())
   while (!done) {
     yield fn(previousValue, value)
-    previousValue = value;
-    ({ value, done } = iterator.next())
+    previousValue = value
+    ;({ value, done } = iterator.next())
   }
 }
 

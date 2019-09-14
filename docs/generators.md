@@ -13,7 +13,6 @@ console.log(...generators.range(5)) // prints 0 1 2 3 4
 
 ## Table of Contents
 
-
 <!-- !toc (level=2 minlevel=2 omit="Usage;Table of Contents") -->
 
 * [concatenate](#concatenate)

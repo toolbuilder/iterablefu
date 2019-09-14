@@ -20,8 +20,8 @@ export const forEach = (fn, iterable) => {
 }
 
 /**
- * The reduce() method executes a reducer function (that you provide)
- * on each element of the array, resulting in a single output value.
+ * The reduce() method executes a reducer function on each element of
+ * the input iterable, resulting in a single output value.
  *
  * @param {Function} fn - fn(accumulator, item) that returns the new accumulator value
  * @param {any} accumulator - the initial accumulator value

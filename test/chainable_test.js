@@ -27,7 +27,7 @@ tape('chainable', test => {
     {
       name: 'has expected generator methods',
       actual: [...Object.keys(chainable)].sort(),
-      expected: ['ChainableIterable', ...Object.keys(generators)].sort()
+      expected: [...Object.keys(generators)].sort()
     },
     {
       name: 'generator methods return ChainableIterable',

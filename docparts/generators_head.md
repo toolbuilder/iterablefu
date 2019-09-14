@@ -12,3 +12,5 @@ console.log(...generators.range(5)) // prints 0 1 2 3 4
 ```
 
 ## Table of Contents
+
+!toc (minlevel=2 level=2 omit="Usage;Table of Contents")

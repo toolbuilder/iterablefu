@@ -1,3 +1,4 @@
+import resolve from 'rollup-plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 
 export default [
@@ -9,7 +10,12 @@ export default [
       format: 'umd',
       name: 'iterablefu'
     },
-    plugins: []
+    plugins: [
+      resolve({
+        mainFields: ['module'],
+        modulesOnly: true
+      })
+    ]
   },
   {
     input: 'src/chainable.js',
@@ -19,6 +25,12 @@ export default [
       format: 'umd',
       name: 'iterablefu'
     },
-    plugins: [terser()]
+    plugins: [
+      resolve({
+        mainFields: ['module'],
+        modulesOnly: true
+      }),
+      terser()
+    ]
   }
 ]

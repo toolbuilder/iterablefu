@@ -5,12 +5,11 @@ Methods to convert an iterable to a single value of some sort.
 ## Usage
 
 ```javascript
-import { sequences, reducers } from 'iterablefu'
-console.log(reducers.toArray(sequences.range(5))) // prints [0, 1, 2, 3, 4]
+import { generators, reducers } from 'iterablefu'
+console.log(reducers.toArray(generators.range(5))) // prints [0, 1, 2, 3, 4]
 ```
 
 ## Table of Contents
-
 
 <!-- !toc (level=2 minlevel=2 omit="Usage;Table of Contents") -->
 
@@ -46,8 +45,8 @@ Returns **[undefined][2]**
 
 ## reduce
 
-The reduce() method executes a reducer function (that you provide)
-on each element of the array, resulting in a single output value.
+The reduce() method executes a reducer function on each element of
+the input iterable, resulting in a single output value.
 
 ### Parameters
 

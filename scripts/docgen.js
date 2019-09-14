@@ -173,13 +173,12 @@ async function generateFunctionalDocs (headerFile, coreDocs, outputFile) {
     chainable
       .concatenate(
         header,
-        ['', '!toc (minlevel=2 level=2 omit="Usage;Table of Contents")', ''],
         coreDocs
       )
       .map(line => {
         return line.replace(
           'Returns **Generator**',
-          `Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)`)
+          'Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)')
       })
       .toArray()
       .join('\n')

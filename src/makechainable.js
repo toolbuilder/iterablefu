@@ -1,3 +1,4 @@
+import { makeFactory } from '@toolbuilder/make-factory/src/factory.js'
 /**
  * Dynamically create a ChainableClass. This differs from makeChainableIterator only in that the class can't be
  * called as a function.
@@ -57,18 +58,5 @@ export const makeChainableClass = (generators, transforms, reducers) => {
 export const makeChainableIterable = (generators, transforms, reducers) => {
   const ChainableClass = makeChainableClass(generators, transforms, reducers)
 
-  const ChainableIterable = function (iterable) {
-    return new ChainableClass(iterable)
-  }
-
-  ChainableIterable.ChainableIterable = ChainableClass // provided to support testing
-
-  // Dynamically add static sequence generator methods to class
-  for (const methodName in generators) {
-    ChainableIterable[methodName] = function (...args) {
-      return ChainableClass[methodName](...args)
-    }
-  }
-
-  return ChainableIterable
+  return makeFactory(ChainableClass)
 }

@@ -6,11 +6,10 @@ Transforms convert one iterable into another iterable.
 
 ```javascript
 import { transforms } from 'iterablefu'
-console.log(...transforms.map(x => 2 * x, [0, 1, 2])) // prints 0 2 4
+console.log([...transforms.map(x => 2 * x, [0, 1, 2])]) // prints 0 2 4
 ```
 
 ## Table of Contents
-
 
 <!-- !toc (level=2 minlevel=2 omit="Usage;Table of Contents") -->
 
@@ -77,7 +76,7 @@ Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## diff
 
-Execute fn(previous, current) and yield the result for each pair.
+Execute fn(previous, current) and yields the result for each pair.
 Would be useful for calculating time differences between timestamps.
 
 ### Parameters
@@ -92,7 +91,7 @@ const a = diff((n, m) => m - n, [0, 1, 2, 3, 4])
 console.log([...a]) // prints [1, 1, 1, 1]
 ```
 
-Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) if input has more than two items, output sequence
+Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) if input has two or more items, output sequence
 is one shorter than input sequence. Otherwise, no items are output.
 
 ## filter

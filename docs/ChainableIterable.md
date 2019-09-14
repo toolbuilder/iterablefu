@@ -278,7 +278,7 @@ Returns **ChainableIterable** for the chunked sequence
 
 ### diff
 
-Execute fn(previous, current) and yield the result for each pair.
+Execute fn(previous, current) and yields the result for each pair.
 Would be useful for calculating time differences between timestamps.
 
 #### Parameters
@@ -293,7 +293,7 @@ const a = ChainableIterable.from(input).diff((n, m) => m - n).toArray()
 console.log(a)  // prints [1, 1, 1, 1]
 ```
 
-Returns **ChainableIterable** if input has more than two items, output sequence
+Returns **ChainableIterable** if input has two or more items, output sequence
 is one shorter than input sequence. Otherwise, no items are output.
 
 ### filter
@@ -543,8 +543,8 @@ Returns **[undefined][2]**
 
 ### reduce
 
-The reduce() method executes a reducer function (that you provide)
-on each element of the array, resulting in a single output value.
+The reduce() method executes a reducer function on each element of
+the input iterable, resulting in a single output value.
 
 #### Parameters
 

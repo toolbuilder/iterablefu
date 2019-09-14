@@ -1,20 +1,25 @@
 {
   "dependencies": {
+    "@toolbuilder/make-factory": "^0.1.0-rc2",
     "esm": "^3.2.25"
   },
   "description": "Small (1.2kb gz), set of functions like range, map, reduce, filter, zip, for iterable objects.",
   "devDependencies": {
-    "@babel/plugin-transform-async-to-generator": "^7.5.0",
+    "@toolbuilder/eslint-config": "^0.1.0",
     "documentation": "^12.0.3",
     "dot": "^1.1.2",
+    "eslint": "^6.3.0",
     "markedpp": "^1.0.1",
     "npm-run-all": "^4.1.5",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.0",
     "rollup": "^1.17.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.1",
-    "standard": "^13.1.0",
     "tap-nirvana": "^1.1.0",
     "tape": "^4.11.0"
+  },
+  "eslintConfig": {
+    "extends": "@toolbuilder/eslint-config"
   },
   "files": [
     "src",
@@ -40,17 +45,16 @@
     "url": "https://github.com/toolbuilder/iterablefu"
   },
   "scripts": {
-    "build": "npm-run-all --serial test bundle docs",
+    "build": "npm-run-all --serial test lint bundle docs",
     "bundle": "npm-run-all --serial bundle:clean bundle:rollup",
     "bundle:clean": "rimraf umd",
     "bundle:rollup": "rollup -c rollup.config.js",
     "docs": "npm-run-all --serial docs:clean docs:generate",
     "docs:clean": "rimraf docs",
     "docs:generate": "node -r esm scripts/docgen.js",
+    "lint": "eslint src scripts test",
     "prepublishOnly": "npm run build",
-    "standard": "standard",
-    "test": "npm-run-all --serial standard test:tape",
-    "test:tape": "tape -r esm test/*_test.js | tap-nirvana"
+    "test": "tape -r esm test/*_test.js | tap-nirvana"
   },
   "version": "0.4.0-rc0"
 }

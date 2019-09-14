@@ -1,12 +1,18 @@
 # Customization
 
 The simplest way to extend `IterableFu` is to use the `makeChainableIterable` method to generate your
-own version of [chainable](chainable.md). You can use your own methods and methods from `iterablefu` 
+own version of [chainable](chainable.md). You can use your own methods and methods from `iterablefu`
 with `makeChainableIterable`.
+
+## Table of Contents
+
+!toc (minlevel=2 level=3 omit="Table of Contents")
 
 ## Usage
 
 This section walks through an example that adds a few simple methods to those already provided by `iterablefu`.
+You can also reduce the number of methods the same way. The [README](../README.md) shows a quick example for reducing
+bundle size.
 
 ### Imports
 
@@ -51,7 +57,7 @@ const multiply = (n, iterable) => {
 // the generated chainable class methods have a different signature (i.e. no iterable parameter).
 // Because map returns an iterable object, byTwo shouldn't be a generator function itself (no asterisk).
 const byTwo = function (iterable) {
-  return transforms.map(x = 2 * x, iterable)
+  return transforms.map(x => 2 * x, iterable)
 }
 ```
 
@@ -93,4 +99,50 @@ const set = customChainable.simpleRange(3).multiply(2).toSet()
 Both [chainable](chainable.md) and [ChainableIterable](ChainableIterable.md) are generated using `makeChainableIterable`.
 You can extend `ChainableIterable` if you wish, but the API for chaining is not public and may change from release to release.
 
-## Table of Contents
+## Extending Chainable
+
+The `makeChainableClass` function starts with a super simple class before mixing in the generators, transducers, and reducers.
+
+```javascript
+  const Chainable = class {
+    constructor (iterable) {
+      this.chainedIterable = iterable
+    }
+
+    * [Symbol.iterator] () {
+      yield * this.chainedIterable
+    }
+  }
+```
+
+Extend the class after calling `makeChainableClass`. Then if you want a static factory class do this:
+
+```javascript
+import { makeChainableClass } from 'iterablefu'
+import { makeFactory } from '@toolbuilder/make-factory'
+
+const ChainableIterable = makeChainableClass(generators, transforms, reducers)
+
+class Extended extends ChainableIterable {
+  catch (fn, iterable) {
+    const doCatch = function * (fn, iterable) {
+      try { yield * } catch (e) { fn(e) }
+    }
+    this.chainedIterable = doCatch(fn, this.chainedIterable)
+    return this
+  }
+
+  finally (fn, iterable) {
+    const doFinally = function * (fn, iterable) {
+      try { yield * iterable } finally { fn() }
+    }
+    this.chainedIterable = doFinally(fn, this.chainedIterable)
+    return this
+  }
+}
+
+const chainable = makeFactory(Extended)
+
+const iterable = chainable([0, 1, 3]).toArray()
+
+```
