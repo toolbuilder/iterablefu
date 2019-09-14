@@ -4,7 +4,6 @@ dependencies:
 devDependencies:
   '@toolbuilder/eslint-config': 0.1.0_eslint@6.3.0
   documentation: 12.1.2
-  dot: 1.1.2
   eslint: 6.3.0
   markedpp: 1.0.1
   npm-run-all: 4.1.5
@@ -1844,13 +1843,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-k0orsM458oU4m2P7yaXuLwM/0TPC1y0AWeiM5qLIT39oGjUgHLY+VOlb9x2cty5LyENxLQl4rtQzTMWKJ6l5Ng==
-  /dot/1.1.2:
-    dev: true
-    engines:
-      '0': node >=0.2.6
-    hasBin: true
-    resolution:
-      integrity: sha1-xzdwGfxOVQeYkosrmv62ar+h8vk=
   /duplexer/0.1.1:
     dev: true
     resolution:
@@ -5146,7 +5138,6 @@ specifiers:
   '@toolbuilder/eslint-config': ^0.1.0
   '@toolbuilder/make-factory': ^0.1.0-rc2
   documentation: ^12.0.3
-  dot: ^1.1.2
   eslint: ^6.3.0
   esm: ^3.2.25
   markedpp: ^1.0.1

@@ -1,5 +1,4 @@
 import { promises } from 'fs'
-import dot from 'dot'
 import { chainable } from '../src/chainable.js'
 import documentation from 'documentation'
 import markedpp from 'markedpp'
@@ -8,11 +7,6 @@ const documentationOptions = {
   extension: 'js',
   shallow: true,
   'markdown-toc': false
-}
-
-dot.templateSettings = {
-  ...dot.templateSettings,
-  strip: false
 }
 
 const collectExamples = function * (iterable) {
@@ -94,7 +88,11 @@ const indentHeadingsOneMoreLevel = line => {
 
 const processExamplesTemplateWith = (template, context) => {
   return chainable(template.split('\n'))
-    .map(line => dot.template(line)(context))
+    .map(line => {
+      return line
+        .replace('<%= static %>', context.static)
+        .replace('<%= ctor %>', context.ctor)
+    })
     .mapWith(collectExamples)
     // build single object keyed by example.name
     .reduce((o, example) => {
