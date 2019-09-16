@@ -1,4 +1,4 @@
-import tape from 'tape'
+import { test as tape } from 'zora'
 import { makeChainableIterable } from '../src/makechainable.js'
 import * as generators from '../src/generators.js'
 import * as transforms from '../src/transforms.js'
@@ -57,7 +57,6 @@ tape('sequences', test => {
       expected: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('transforms', test => {
@@ -73,7 +72,6 @@ tape('transforms', test => {
       expected: [0, 2, 4, 6, 8]
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('reducers', test => {
@@ -82,5 +80,4 @@ tape('reducers', test => {
 
   const array = chainable.range(5).toArray()
   test.deepEqual(array, [0, 1, 2, 3, 4], 'Reducers.toArray was added to chainable iterator')
-  test.end()
 })

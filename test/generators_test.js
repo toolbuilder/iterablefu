@@ -1,4 +1,4 @@
-import tape from 'tape'
+import { test as tape } from 'zora'
 import * as generators from '../src/generators.js'
 
 const makeTestRunner = (test) => (parameters) => {
@@ -29,7 +29,6 @@ tape('concatentate', test => {
       expected: [0, 1, 2, 3, 4]
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 const fromGenerator = function * () {
@@ -46,7 +45,6 @@ tape('from', test => {
       expected: [0, 1, 2, 3, 4]
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('range', test => {
@@ -76,7 +74,6 @@ tape('range', test => {
       }
     ].forEach(makeTestRunner(test))
   })
-  test.end()
 })
 
 tape('repeat', test => {
@@ -92,7 +89,6 @@ tape('repeat', test => {
       expected: []
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('repeatIterable', test => {
@@ -108,7 +104,6 @@ tape('repeatIterable', test => {
       expected: [0, 1, 2]
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 // Some values for the zip tests
@@ -128,7 +123,6 @@ tape('zip', test => {
       expected: iterableRef
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('zipAll', test => {
@@ -144,5 +138,4 @@ tape('zipAll', test => {
       expected: Array.from(generators.concatenate(iterableRef, [['cherry', undefined]]))
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })

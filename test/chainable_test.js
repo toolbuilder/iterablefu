@@ -1,4 +1,4 @@
-import tape from 'tape'
+import { test as tape } from 'zora'
 import {
   chainable,
   ChainableIterable,
@@ -44,8 +44,6 @@ tape('chainable', test => {
   }
 
   test.deepEqual([...chainable(makeRangeIterator(0, 5))], [0, 1, 2, 3, 4], 'chainable works with iterators')
-
-  test.end()
 })
 
 tape('ChainableIterable', test => {
@@ -72,7 +70,6 @@ tape('ChainableIterable', test => {
       expected: [1, 2, 3]
     }
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('makeChainableClass', test => {
@@ -80,7 +77,6 @@ tape('makeChainableClass', test => {
   // This class functions identically to ChainableIterable
   const Chainable = makeChainableClass(generators, transforms, reducers)
   test.deepEqual([...new Chainable([1, 2, 3])], [1, 2, 3], 'makes a chainable iterable class')
-  test.end()
 })
 
 tape('makeChainableIterable', test => {
@@ -88,5 +84,4 @@ tape('makeChainableIterable', test => {
   // This object functions identically to chainable
   const ChainableFunc = makeChainableIterable(generators, transforms, reducers)
   test.deepEqual([...ChainableFunc([1, 2, 3])], [1, 2, 3], 'makes a Chainable function')
-  test.end()
 })

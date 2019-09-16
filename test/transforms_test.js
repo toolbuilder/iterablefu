@@ -1,4 +1,4 @@
-import tape from 'tape'
+import { test as tape } from 'zora'
 import * as generators from '../src/generators.js'
 import * as transforms from '../src/transforms.js'
 
@@ -54,7 +54,6 @@ tape('arrayToObject', test => {
       ]
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('chunk', test => {
@@ -79,7 +78,6 @@ tape('chunk', test => {
       []
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('diff', test => {
@@ -105,7 +103,6 @@ tape('diff', test => {
     ]
 
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('filter', test => {
@@ -124,7 +121,6 @@ tape('filter', test => {
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('flatten', test => {
@@ -143,7 +139,6 @@ tape('flatten', test => {
       ['Chainable', 'Iterable', 'Sequence', 'Generator', 'Transform']
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('flattenRecursive', test => {
@@ -162,7 +157,6 @@ tape('flattenRecursive', test => {
       ['Chainable', 'Iterable', 'Sequence', 'Generator', 'Transform']
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('map', test => {
@@ -175,7 +169,6 @@ tape('map', test => {
       [0, 3, 6, 9, 12]
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 const mapWithGenerator = function * (iterable) {
@@ -193,7 +186,6 @@ tape('mapWith', test => {
       [0, 1, 4, 9, 16]
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('pluck', test => {
@@ -214,7 +206,6 @@ tape('pluck', test => {
       ['able', 'better', 'chainable', 'dictionary', 'enhanced', undefined]
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('nth', test => {
@@ -233,7 +224,6 @@ tape('nth', test => {
       Array.from(generators.range(6, 5))
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('reject', test => {
@@ -246,7 +236,6 @@ tape('reject', test => {
       [1, 3, 5, 7, 9]
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('take', test => {
@@ -271,7 +260,6 @@ tape('take', test => {
       []
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('takeWhile', test => {
@@ -284,7 +272,6 @@ tape('takeWhile', test => {
       Array.from(generators.range(5))
     ]
   ].forEach(makeTestRunner(test))
-  test.end()
 })
 
 tape('tap', test => {
@@ -293,5 +280,4 @@ tape('tap', test => {
   const iterable = transforms.tap(x => accumulator.push(2 * x), inputSequence)
   test.deepEqual(Array.from(iterable), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 'does not modify sequence')
   test.deepEqual(accumulator, [0, 2, 4, 6, 8, 10, 12, 14, 16, 18], 'executes function for each element')
-  test.end()
 })

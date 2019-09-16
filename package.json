@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@toolbuilder/make-factory": "^0.1.0-rc2",
+    "@toolbuilder/make-factory": "^0.1.0",
     "esm": "^3.2.25"
   },
   "description": "Small (1.2kb gz), set of functions like range, map, reduce, filter, zip, for iterable objects.",
@@ -15,7 +15,8 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.1",
     "tap-nirvana": "^1.1.0",
-    "tape": "^4.11.0"
+    "tape": "^4.11.0",
+    "zora": "^3.0.3"
   },
   "eslintConfig": {
     "extends": "@toolbuilder/eslint-config"
@@ -51,7 +52,7 @@
     "docs": "npm-run-all --serial docs:clean docs:generate",
     "docs:clean": "rimraf docs",
     "docs:generate": "node -r esm scripts/docgen.js",
-    "lint": "eslint src scripts test",
+    "lint": "eslint --format=tap src scripts test",
     "prepublishOnly": "npm run build",
     "test": "tape -r esm test/*_test.js | tap-nirvana"
   },
