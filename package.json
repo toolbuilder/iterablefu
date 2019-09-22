@@ -16,6 +16,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.1.1",
+    "shelljs": "^0.8.3",
     "tap-nirvana": "^1.1.0",
     "tape": "^4.11.0",
     "tape-run": "^6.0.1",
@@ -48,7 +49,7 @@
     "url": "https://github.com/toolbuilder/iterablefu"
   },
   "scripts": {
-    "build": "npm-run-all --serial test lint bundle test:browser docs",
+    "build": "npm-run-all --serial test lint bundle test:package test:browser docs",
     "bundle": "npm-run-all --serial bundle:clean bundle:umd bundle:test",
     "bundle:clean": "rimraf umd temp",
     "bundle:umd": "rollup -c rollup.config.js",
@@ -59,7 +60,8 @@
     "lint": "eslint src scripts test",
     "prepublishOnly": "npm run build",
     "test": "tape -r esm test/*_test.js | tap-nirvana",
-    "test:browser": "node -r esm scripts/cat.js temp/bundle.js | tape-run | tap-nirvana"
+    "test:browser": "node -r esm scripts/cat.js temp/bundle.js | tape-run | tap-nirvana",
+    "test:package": "node -r esm scripts/package_test.js"
   },
   "version": "0.4.0-rc0"
 }

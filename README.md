@@ -254,8 +254,7 @@ Contributions are welcome. Please create a pull request.
 
 I use [pnpm](https://pnpm.js.org/) instead of npm.
 
-I've been using [Verdaccio](https://github.com/verdaccio/verdaccio) for testing release candidates. But published
-package testing is not yet automated. Neither is browser testing. Lots of room for improvement here.
+Automated browser tests use electron. Automated package tests build a `*.tgz` package and run tweaked unit tests in a temporary directory. Use `pnpm run build` to run everything in the right order.
 
 ## Issues
 
