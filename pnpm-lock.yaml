@@ -6,6 +6,7 @@ devDependencies:
   documentation: 12.1.2
   eslint: 6.4.0
   markedpp: 1.0.1
+  multistream: 4.0.0
   npm-run-all: 4.1.5
   rimraf: 3.0.0
   rollup: 1.21.3
@@ -3769,6 +3770,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
+  /multistream/4.0.0:
+    dependencies:
+      readable-stream: 3.4.0
+    dev: true
+    resolution:
+      integrity: sha512-t0C8MAtH/d3Y+5nooEtUMWli92lVw9Jhx4uOhRl5GAwS5vc+YTmp/VXNJNsCBAMeEyK/6zhbk6x9JE3AiCvo4g==
   /mute-stream/0.0.7:
     dev: true
     resolution:
@@ -4522,6 +4529,16 @@ packages:
     dev: true
     resolution:
       integrity: sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==
+  /readable-stream/3.4.0:
+    dependencies:
+      inherits: 2.0.4
+      string_decoder: 1.3.0
+      util-deprecate: 1.0.2
+    dev: true
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-jItXPLmrSR8jmTRmRWJXCnGJsfy85mB3Wd/uINMXA65yrnFo0cPClFIUWzo2najVNSl+mx7/4W8ttlLWJe99pQ==
   /readable-wrap/1.0.0:
     dependencies:
       readable-stream: 1.1.14
@@ -5315,6 +5332,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
+  /string_decoder/1.3.0:
+    dependencies:
+      safe-buffer: 5.2.0
+    dev: true
+    resolution:
+      integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
   /stringify-entities/1.3.2:
     dependencies:
       character-entities-html4: 1.1.3
@@ -6179,6 +6202,7 @@ specifiers:
   eslint: ^6.3.0
   esm: ^3.2.25
   markedpp: ^1.0.1
+  multistream: ^4.0.0
   npm-run-all: ^4.1.5
   rimraf: ^3.0.0
   rollup: ^1.17.0
