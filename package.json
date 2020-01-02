@@ -1,26 +1,26 @@
 {
   "dependencies": {
-    "@toolbuilder/make-factory": "^0.1.0",
+    "@toolbuilder/make-factory": "^0.1.1",
     "esm": "^3.2.25"
   },
   "description": "Small (1.2kb gz), set of functions like range, map, reduce, filter, zip, for iterable objects.",
   "devDependencies": {
     "@toolbuilder/eslint-config": "^0.1.0",
-    "documentation": "^12.0.3",
-    "eslint": "^6.3.0",
+    "documentation": "^12.1.4",
+    "eslint": "^6.8.0",
     "markedpp": "^1.0.1",
     "multistream": "^4.0.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.0",
-    "rollup": "^1.17.0",
+    "rollup": "^1.27.14",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-terser": "^5.1.1",
+    "rollup-plugin-terser": "^5.1.3",
     "shelljs": "^0.8.3",
     "tap-nirvana": "^1.1.0",
-    "tape": "^4.11.0",
+    "tape": "^4.12.1",
     "tape-run": "^6.0.1",
-    "zora": "^3.0.3"
+    "zora": "^3.1.8"
   },
   "eslintConfig": {
     "extends": "@toolbuilder/eslint-config"
@@ -53,15 +53,17 @@
     "bundle": "npm-run-all --serial bundle:clean bundle:umd bundle:test",
     "bundle:clean": "rimraf umd temp",
     "bundle:umd": "rollup -c rollup.config.js",
-    "bundle:test": "node -r esm scripts/forbrowser.js",
+    "bundle:combinetests": "node -r esm scripts/combine_all_tests.js",
+    "bundle:umdtests": "rollup -c scripts/rollup.tests.config.js",
+    "bundle:test": "npm-run-all --serial bundle:combinetests bundle:umdtests",
     "docs": "npm-run-all --serial docs:clean docs:generate",
     "docs:clean": "rimraf docs",
     "docs:generate": "node -r esm scripts/docgen.js",
     "lint": "eslint src scripts test",
     "prepublishOnly": "npm run build",
     "test": "tape -r esm test/*_test.js | tap-nirvana",
-    "test:browser": "node -r esm scripts/cat.js temp/bundle.js | tape-run | tap-nirvana",
+    "test:browser": "node -r esm scripts/cat.js temp/all_test_umd.js | tape-run | tap-nirvana",
     "test:package": "node -r esm scripts/package_test.js"
   },
-  "version": "0.4.0"
+  "version": "0.4.1-rc0"
 }
