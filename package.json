@@ -65,5 +65,5 @@
     "test:browser": "node -r esm scripts/cat.js temp/all_test_umd.js | tape-run | tap-nirvana",
     "test:package": "node -r esm scripts/package_test.js"
   },
-  "version": "0.4.1"
+  "version": "0.4.2-rc1"
 }

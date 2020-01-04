@@ -123,6 +123,17 @@ export const repeatIterable = function * (n, repeatableIterable) {
   }
 }
 
+// generic zip implementation for zip and zipAll
+// could combine done test with building yield value at expense of readability
+const zipIt = function * (isDone, iterables) {
+  const iterators = iterables.map(x => x[Symbol.iterator]())
+  let nextResults = iterators.map(i => i.next())
+  while (!isDone(nextResults)) {
+    yield nextResults.map(result => result.value)
+    nextResults = iterators.map(i => i.next())
+  }
+}
+
 /**
  * Creates a sequence of arrays the same length as the *shortest* iterable provided. The first array contains the first
  * element from each of the iterables provided. The second array contains the second element from each of the
@@ -137,14 +148,9 @@ export const repeatIterable = function * (n, repeatableIterable) {
  * console.log([...generator]) // prints [[0, 'a'], [1, 'b'], [2, 'c']]
  *
  */
-export const zip = function * (...iterables) {
+export const zip = (...iterables) => {
   const isDone = (nextResults) => nextResults.reduce((done, nextResult) => done || nextResult.done, false)
-  const iterators = iterables.map(x => x[Symbol.iterator]())
-  let nextResults = iterators.map(i => i.next())
-  while (!isDone(nextResults)) {
-    yield nextResults.map(result => result.value)
-    nextResults = iterators.map(i => i.next())
-  }
+  return zipIt(isDone, iterables)
 }
 
 /**
@@ -161,12 +167,7 @@ export const zip = function * (...iterables) {
  * console.log([...generator]) // prints [[0, 'a'], [1, 'b'], [2, 'c'], [undefined, 'd']]
  *
  */
-export const zipAll = function * (...iterables) {
+export const zipAll = (...iterables) => {
   const isDone = (nextResults) => nextResults.reduce((done, nextResult) => done && nextResult.done, true)
-  const iterators = iterables.map(x => x[Symbol.iterator]())
-  let nextResults = iterators.map(i => i.next())
-  while (!isDone(nextResults)) {
-    yield nextResults.map(result => result.value)
-    nextResults = iterators.map(i => i.next())
-  }
+  return zipIt(isDone, iterables)
 }
