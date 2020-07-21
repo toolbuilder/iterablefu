@@ -1,5 +1,5 @@
 import { test as tape } from 'zora'
-import * as generators from '../src/generators.js'
+import { generators } from '../src/chainable'
 
 const makeTestRunner = (test) => (parameters) => {
   const { name, actual, expected } = parameters
