@@ -13,6 +13,8 @@
 * Functional API takes data last, so you can curry, pipe and compose with your functional library.
 * Written in ES6 javascript using ES6 modules.
 
+If you want asynchronous iterables along with task pool, event queue, pub/sub, merge, chunk, throttle, and the like, checkout [await-for-it](https://github.com/toolbuilder/await-for-it#readme).
+
 ## Table of Contents
 
 <!-- !toc (minlevel=2 omit="Features;Table of Contents") -->
@@ -26,7 +28,6 @@
   * [Iterablefu and Your Generators](#iterablefu-and-your-generators)
 * [Smaller Bundles](#smaller-bundles)
 * [Customization](#customization)
-* [When To Use](#when-to-use)
 * [Alternatives](#alternatives)
 * [Contributing](#contributing)
 * [Issues](#issues)
@@ -213,28 +214,6 @@ const chainable = makeChainableIterable(generators, transforms, reducers)
 ## Customization
 
 Customization is covered  in the [makeChainableIterable](docs/makechainable.md) documentation.
-
-## When To Use
-
-Iterables are great if you write code that supports any iterable container, like Array, Set, etc. A method
-like this, `const writeCsv = async (records, writeStream) => { /***/ }` can be more flexible if `records` is an
-iterator rather than just an Array.
-
-Iterators also support generators, which make it much easier to maintain state while iterating.
-
-If you're performing simple transformations on small amounts of data, then the built in transforms such as [Array.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) will probably work just as well. Slightly more complicated would be [lodash](https://github.com/lodash/lodash) or [underscore](https://github.com/jashkenas/underscore). These approaches create a new Array for each transformation, and can be expensive on large amounts of data.
-
-Iterables require a synchronous data source. So asynchronous code needs a different approach. I prefer async generators and
-iterators to Observables.
-
-* Async iterables are literally iterables that return Promises, so the mental model is simpler.
-* The async iterator protocol automatically applies back pressure. Compare to [this](https://codeburst.io/a-look-at-back-pressure-and-its-handling-in-rxjs-5bc8f04a2e8f) for RxJs.
-* They have direct support in the language: async generators, `yield *`, async functions, Promises, etc.
-* They work directly with synchronous iterables as input
-
-You can use `Iterablefu` with Observable libraries because `Observable.from(iterable)` is part of the [psuedo-standard](https://github.com/tc39/proposal-observable). If you're already comfortable with the Observable model: Observable, Observer, Subscriber, cold observables, hot observables, etc., then you can get by without `IterableFu`.
-
-Streams are another alternative. Standard browser support is coming. Streams provide backpressure. They are more specialized and capable for input/output use cases like character encoding, and Object to character conversions. The [mississippi](https://github.com/maxogden/mississippi) library makes stream use significantly easier.
 
 ## Alternatives
 
