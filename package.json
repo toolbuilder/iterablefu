@@ -1,6 +1,6 @@
 {
   "name": "iterablefu",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Small, chainable, set of functions like range, map, reduce, filter, zip, for iterable objects.",
   "keywords": [
     "iterable",
@@ -21,7 +21,7 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./src/" : {
+    "./src/": {
       "require": "./cjs/",
       "default": "./src/"
     },
