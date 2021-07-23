@@ -33,7 +33,7 @@ Concatenates a list of iterables into a single iterable.
 
 ### Parameters
 
-- `iterables` **...Iterable** to be concatenated
+* `iterables` **...Iterable** to be concatenated
 
 ### Examples
 
@@ -51,8 +51,8 @@ so that ChainableIterable has a static constructor method.
 
 ### Parameters
 
-- `iterable`  
-- `inputIterable` **Iterable** the iterable
+* `iterable`  
+* `inputIterable` **Iterable** the iterable
 
 ### Examples
 
@@ -74,7 +74,7 @@ Creates a sequence of numbers similar to the Python range. See the example.
 
 ### Parameters
 
-- `args` **...integer** per the example
+* `args` **...integer** per the example
 
 ### Examples
 
@@ -96,8 +96,8 @@ Generates a sequence of things, n times
 
 ### Parameters
 
-- `n` **[number][1]** the number of times to repeat thing
-- `thing` **any** the repeated thing
+* `n` **[number][1]** the number of times to repeat thing
+* `thing` **any** the repeated thing
 
 ### Examples
 
@@ -115,13 +115,13 @@ Repeat an iterable n times.
 NOTE: Generator functions are designed to create one-time-use iterables, and will not work as expected
 with repeatIterable. Once a generator completes, it won't restart, and therefore can't be repeated.
 
-Instead, use an iterable object where calling [Symbol.iterator] returns a new Generator object with
+Instead, use an iterable object where calling \[Symbol.iterator] returns a new Generator object with
 new state. See the examples below...
 
 ### Parameters
 
-- `n` **[number][1]** number of times to repeat iterable
-- `repeatableIterable` **Iterable** the input iterable to repeat, see notes above and examples.
+* `n` **[number][1]** number of times to repeat iterable
+* `repeatableIterable` **Iterable** the input iterable to repeat, see notes above and examples.
 
 ### Examples
 
@@ -153,13 +153,13 @@ Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## zip
 
-Creates a sequence of arrays the same length as the _shortest_ iterable provided. The first array contains the first
+Creates a sequence of arrays the same length as the *shortest* iterable provided. The first array contains the first
 element from each of the iterables provided. The second array contains the second element from each of the
 iterables provided, and so on.
 
 ### Parameters
 
-- `iterables` **...Iterable** the iterables to be zipped
+* `iterables` **...Iterable** the iterables to be zipped
 
 ### Examples
 
@@ -174,13 +174,13 @@ Returns [Generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refe
 
 ## zipAll
 
-Creates a sequence of arrays the same length as the _longest_ iterable provided. The first array contains the first
+Creates a sequence of arrays the same length as the *longest* iterable provided. The first array contains the first
 element from each of the iterables provided. The second array contains the second element from each of the
 iterables provided, and so on. Missing elements from the shorter iterables are set to undefined.
 
 ### Parameters
 
-- `iterables` **...Iterable** the iterables to be zipped
+* `iterables` **...Iterable** the iterables to be zipped
 
 ### Examples
 

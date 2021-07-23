@@ -105,6 +105,10 @@ const isString = (item) => typeof item === 'string' || item instanceof String
 // Generally accepted method of checking if something supports the Iterable protocol
 const isIterable = (item) => item && typeof item[Symbol.iterator] === 'function'
 
+export const flattenWhen = function * (fn, iterable) {
+
+}
+
 /**
  * Flattens a sequence of items one level deep. It does not flatten strings, even
  * though they are iterable.

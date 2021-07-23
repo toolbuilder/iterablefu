@@ -169,10 +169,10 @@ called as a function.
 
 ### Parameters
 
-- `generators` **[Object][1]** Each key is the name of a generator, the value is a generator function.
-- `transforms` **[Object][1]** Each key is the name of a transform, the value is a generator function that takes
+* `generators` **[Object][1]** Each key is the name of a generator, the value is a generator function.
+* `transforms` **[Object][1]** Each key is the name of a transform, the value is a generator function that takes
   an iterable as the last argument.
-- `reducers` **[Object][1]** Each key is the name of a reducer, the value is a function that takes the iterable
+* `reducers` **[Object][1]** Each key is the name of a reducer, the value is a function that takes the iterable
   to reduce as the last argument.
 
 ## makeChainableIterable
@@ -181,10 +181,10 @@ Dynamically create a ChainableIterable class/function.
 
 ### Parameters
 
-- `generators` **[Object][1]** Each key is the name of a generator, the value is a generator function.
-- `transforms` **[Object][1]** Each key is the name of a transform, the value is a generator function that takes
+* `generators` **[Object][1]** Each key is the name of a generator, the value is a generator function.
+* `transforms` **[Object][1]** Each key is the name of a transform, the value is a generator function that takes
   the iterable to transform as the last argument.
-- `reducers` **[Object][1]** Each key is the name of a reducer, the value is a function that takes the iterable to
+* `reducers` **[Object][1]** Each key is the name of a reducer, the value is a function that takes the iterable to
   reduce as the last argument.
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object

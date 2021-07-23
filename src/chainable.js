@@ -1,5 +1,5 @@
 import { makeChainableIterable, makeChainableClass } from './makechainable.js'
-import { makeFactory } from '@toolbuilder/make-factory/src/factory.js'
+import { makeFactory } from '@toolbuilder/make-factory'
 import * as generators from './generators.js'
 import * as transforms from './transforms.js'
 import * as reducers from './reducers.js'

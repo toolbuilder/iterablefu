@@ -11,7 +11,7 @@
 * Works with your generators (and iterables): `chainable(yourGenerator()).mapWith(yourTransformGenerator)`.
 * Customizable [makeChainableIterable](docs/makechainable.md), to add methods or reduce bundle sizes.
 * Functional API takes data last, so you can curry, pipe and compose with your functional library.
-* Written in ES6 javascript using ES6 modules.
+* Exports both CommonJS and ES modules - dual package.
 
 If you want asynchronous iterables along with task pool, event queue, pub/sub, merge, chunk, throttle, and the like, checkout [await-for-it](https://github.com/toolbuilder/await-for-it#readme).
 
@@ -41,15 +41,6 @@ If you want asynchronous iterables along with task pool, event queue, pub/sub, m
 npm install --save iterablefu
 ```
 
-Access UMD packages and map files from [unpkg](https://unpkg.com).
-
-```html
-<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.min.js"></script>
-<script src="https://unpkg.com/iterablefu/umd/iterablefu.umd.js"></script>
-```
-
-Both UMD packages create a global variable `iterablefu`.
-
 ## Getting Started
 
 If you want the chainable API, use this import.
@@ -58,35 +49,35 @@ If you want the chainable API, use this import.
 import { chainable } from 'iterablefu'
 ```
 
-If you want the functional API, use this import.
-
-```javascript
-import { generators, transforms, reducers } from 'iterablefu'
-```
-
-You may also specify the ES modules directly to reduce bundle sizes. See more in the
-[Smaller Bundles](#smaller-bundles) section.
-
-The most used methods are probably: `zip`, `zipAll`, `filter`, `flatten`, `map`, and `reduce`.
-The documentation has an example for each method:
-
-* [chainable](docs/chainable.md)- Starts the chain and produces a ChainableIterable
-* [ChainableIterable](docs/ChainableIterable.md) - For all the transforms and reducer methods
-
 ```javascript
 import { chainable } from 'iterablefu'
 
-const iterable = chainable([1, 2, 3, 4, 5, 6]) // <-- throw any iterable in here
+const iterable = chainable([1, 2, 3, 4, 5, 6]) // <-- throw any synchronous iterable in here
   .filter(x => x % 2 === 0) // filters out odd numbers
   .map(x => 2 * x)
 
 console.log(Array.from(iterable)) // prints [4, 8, 12]
 ```
 
+The most used methods are probably: `zip`, `zipAll`, `filter`, `flatten`, `map`, and `reduce`.
+The documentation has an example for each method:
+
+* [chainable](docs/chainable.md)- Is a factory that starts the chain and produces a `ChainableIterable`
+* [ChainableIterable](docs/ChainableIterable.md) - For all the transforms and reducer methods
+
+If you want the functional API, use this import.
+
+```javascript
+import { generators, transforms, reducers } from 'iterablefu'
+```
+
+You may also specify the modules directly to reduce bundle sizes. See more in the
+[Smaller Bundles](#smaller-bundles) section.
+
 ## API
 
 * Chainable API
-  * [Chainable factory](docs/chainable.md), builder function for ChainableIterable, [**start here**](docs/chainable.md)
+  * [Chainable factory](docs/chainable.md), factory functions that produce `ChainableIterable` instances
   * [ChainableIterable](docs/ChainableIterable.md), chainable iterable generators, transforms, and reducers
   * [Custom chainables](docs/makechainable.md), create custom chainable iterables
 * Functional API
@@ -143,7 +134,7 @@ An iterable class like Array, can be iterated more than once because it produces
 // IterableFu produces one-time use sequences
 const a = chainable.range(5)
 console.log([...a]) // print [0, 1, 2, 3, 4], iterator is now done
-console.log([...a]) // prints [] because the iterator is already done
+console.log([...a]) // prints [] because the iterator was done before the call
 ```
 
 To reuse an `IterableFu` chain, wrap it in a function so that a new Generator object is returned each time it is called.
@@ -191,7 +182,7 @@ console.log(a) // prints [0, 3, 6, 9, 12]
 
 ## Smaller Bundles
 
-You can reduce bundle size by importing the generators and function you want to use directly.
+You can potentially reduce bundle size by importing the generators and function you want to use directly.
 
 ```javascript
 import { zip, zipAll } from 'iterablefu/src/generators.js'
@@ -241,13 +232,4 @@ This project uses Github issues.
 
 ## License
 
-<!-- include (LICENSE) -->
-The MIT License (MIT)
-
-Copyright 2019 Kevin Hudson
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<!-- /include -->
+MIT

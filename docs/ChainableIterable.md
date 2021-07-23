@@ -70,7 +70,7 @@ Concatenates a list of iterables into a single iterable.
 
 #### Parameters
 
-- `iterables` **...Iterable** to be concatenated
+* `iterables` **...Iterable** to be concatenated
 
 #### Examples
 
@@ -88,7 +88,8 @@ so that ChainableIterable has a static constructor method.
 
 #### Parameters
 
-- `inputIterable` **Iterable** the iterable
+* `iterable`  
+* `inputIterable` **Iterable** the iterable
 
 #### Examples
 
@@ -110,7 +111,7 @@ Creates a sequence of numbers similar to the Python range. See the example.
 
 #### Parameters
 
-- `args` **...integer** per the example
+* `args` **...integer** per the example
 
 #### Examples
 
@@ -129,8 +130,8 @@ Generates a sequence of things, n times
 
 #### Parameters
 
-- `n` **[number][1]** the number of times to repeat thing
-- `thing` **any** the repeated thing
+* `n` **[number][1]** the number of times to repeat thing
+* `thing` **any** the repeated thing
 
 #### Examples
 
@@ -148,13 +149,13 @@ Repeat an iterable n times.
 NOTE: Generator functions are designed to create one-time-use iterables, and will not work as expected
 with repeatIterable. Once a generator completes, it won't restart, and therefore can't be repeated.
 
-Instead, use an iterable object where calling [Symbol.iterator] returns a new Generator object with
+Instead, use an iterable object where calling \[Symbol.iterator] returns a new Generator object with
 new state. See the examples below...
 
 #### Parameters
 
-- `n` **[number][1]** number of times to repeat iterable
-- `repeatableIterable` **Iterable** the input iterable to repeat, see notes above and examples.
+* `n` **[number][1]** number of times to repeat iterable
+* `repeatableIterable` **Iterable** the input iterable to repeat, see notes above and examples.
 
 #### Examples
 
@@ -187,13 +188,13 @@ Returns **ChainableIterable** that will repeat the input iterable n times
 
 ### zip
 
-Creates a sequence of arrays the same length as the _shortest_ iterable provided. The first array contains the first
+Creates a sequence of arrays the same length as the *shortest* iterable provided. The first array contains the first
 element from each of the iterables provided. The second array contains the second element from each of the
 iterables provided, and so on.
 
 #### Parameters
 
-- `iterables` **...Iterable** the iterables to be zipped
+* `iterables` **...Iterable** the iterables to be zipped
 
 #### Examples
 
@@ -208,13 +209,13 @@ Returns **ChainableIterable** for the zipped arrays
 
 ### zipAll
 
-Creates a sequence of arrays the same length as the _longest_ iterable provided. The first array contains the first
+Creates a sequence of arrays the same length as the *longest* iterable provided. The first array contains the first
 element from each of the iterables provided. The second array contains the second element from each of the
 iterables provided, and so on. Missing elements from the shorter iterables are set to undefined.
 
 #### Parameters
 
-- `iterables` **...Iterable** the iterables to be zipped
+* `iterables` **...Iterable** the iterables to be zipped
 
 #### Examples
 
@@ -246,7 +247,8 @@ If the arrays are too short, the remaining properties are assigned undefined.
 
 #### Parameters
 
-- `propertyNames` **Iterable** a sequence of property names
+* `propertyNames` **Iterable** a sequence of property names
+* `iterable` **Iterable** a sequence of arrays (or any iterable objects)
 
 #### Examples
 
@@ -264,7 +266,8 @@ Chunk every n items into an array, and output that array in the output sequence.
 
 #### Parameters
 
-- `n` **[number][1]** the number of items to group into each array.
+* `n` **[number][1]** the number of items to group into each array.
+* `iterable` **Iterable** the sequence of items to group
 
 #### Examples
 
@@ -283,7 +286,8 @@ Would be useful for calculating time differences between timestamps.
 
 #### Parameters
 
-- `fn` **[Function][2]** fn(previous, current), yielding return value
+* `fn` **[Function][2]** fn(previous, current), yielding return value
+* `iterable` **Iterable** the input iterable
 
 #### Examples
 
@@ -303,7 +307,8 @@ fn(item) returns !truthy.
 
 #### Parameters
 
-- `fn` **[Function][2]** fn(item) returns truthy when item should be removed
+* `fn` **[Function][2]** fn(item) returns truthy when item should be removed
+* `iterable` **Iterable** the sequence to filter
 
 #### Examples
 
@@ -323,6 +328,7 @@ though they are iterable.
 
 #### Parameters
 
+* `iterable` **Iterable** the iterable sequence to flatten
 
 #### Examples
 
@@ -341,6 +347,7 @@ Does not flatten strings even though they are iterable.
 
 #### Parameters
 
+* `iterable` **Iterable** the sequence to flatten
 
 #### Examples
 
@@ -358,7 +365,8 @@ Generates a sequence of items by calling fn(item) for each item.
 
 #### Parameters
 
-- `fn` **[Function][2]** fn(item) returns the output item
+* `fn` **[Function][2]** fn(item) returns the output item
+* `iterable` **Iterable** the sequence to map
 
 #### Examples
 
@@ -378,8 +386,9 @@ This method exists solely so that ChainableIterable supports chaining for an arb
 
 #### Parameters
 
-- `generatorFunction` **[Function][2]** a function that returns an iterable object, and takes an iterable as a parameter.
+* `generatorFunction` **[Function][2]** a function that returns an iterable object, and takes an iterable as a parameter.
   Typically, this will be a generator function.
+* `iterable` **Iterable** the input sequence
 
 #### Examples
 
@@ -405,7 +414,8 @@ Given a sequence of Arrays, output the nth element of each array as a sequence.
 
 #### Parameters
 
-- `index` **[number][1]** the index of the Array to output
+* `index` **[number][1]** the index of the Array to output
+* `iterable` **Iterable** the iterable to process
 
 #### Examples
 
@@ -423,7 +433,8 @@ Given a sequence of Objects, output the specified property of each Object as a s
 
 #### Parameters
 
-- `propertyname` **[string][3]** the property to extract from each Object
+* `propertyname` **[string][3]** the property to extract from each Object
+* `iterable` **Iterable** the input sequence of Objects
 
 #### Examples
 
@@ -441,7 +452,8 @@ Reject items when fn(item) returns truthy.
 
 #### Parameters
 
-- `fn` **[Function][2]** fn(item) returns truthy when item should be removed from output sequence
+* `fn` **[Function][2]** fn(item) returns truthy when item should be removed from output sequence
+* `iterable` **Iterable** input sequence
 
 #### Examples
 
@@ -460,7 +472,8 @@ Create an output sequence that is the first n items of the input sequence.
 
 #### Parameters
 
-- `n` **[number][1]** the number of items to take
+* `n` **[number][1]** the number of items to take
+* `iterable` **Iterable** the input sequence to take items from
 
 #### Examples
 
@@ -478,7 +491,8 @@ Output items from the input iterable until fn(item) returns !truthy.
 
 #### Parameters
 
-- `fn` **[Function][2]** fn(item) returns truthy to put item in the output sequence
+* `fn` **[Function][2]** fn(item) returns truthy to put item in the output sequence
+* `iterable` **Iterable** input sequence
 
 #### Examples
 
@@ -497,7 +511,8 @@ item in the sequence.
 
 #### Parameters
 
-- `fn` **[Function][2]** `fn(item)` is called for each item in the sequence
+* `fn` **[Function][2]** `fn(item)` is called for each item in the sequence
+* `iterable` **Iterable** the input sequence
 
 #### Examples
 
@@ -526,8 +541,9 @@ Executes function fn(item, index) for each item in the iterable sequence provide
 
 #### Parameters
 
-- `fn` **[Function][1]** a function(item, index), where item is the current item in the sequence, and index
+* `fn` **[Function][1]** a function(item, index), where item is the current item in the sequence, and index
   is the index of the current item.
+* `iterable` **Iterable** the sequence of items to call fn(item, index) with.
 
 #### Examples
 
@@ -548,8 +564,9 @@ the input iterable, resulting in a single output value.
 
 #### Parameters
 
-- `fn` **[Function][1]** fn(accumulator, item) that returns the new accumulator value
-- `accumulator` **any** the initial accumulator value
+* `fn` **[Function][1]** fn(accumulator, item) that returns the new accumulator value
+* `accumulator` **any** the initial accumulator value
+* `iterable` **Iterable** the sequence to execute fn over.
 
 #### Examples
 
@@ -566,6 +583,7 @@ Creates an  Array from the items in iterable.
 
 #### Parameters
 
+* `iterable` **Iterable** the iterable to create the array from
 
 #### Examples
 

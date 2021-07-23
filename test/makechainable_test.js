@@ -1,5 +1,5 @@
 import { test as tape } from 'zora'
-import { generators, makeChainableIterable, reducers, transforms } from '../src/chainable'
+import { generators, makeChainableIterable, reducers, transforms } from '../src/chainable.js'
 
 // Create some shortened sets of generators, transforms, and reducers
 // to simplify testing.

@@ -27,9 +27,9 @@ Executes function fn(item, index) for each item in the iterable sequence provide
 
 ### Parameters
 
-- `fn` **[Function][1]** a function(item, index), where item is the current item in the sequence, and index
+* `fn` **[Function][1]** a function(item, index), where item is the current item in the sequence, and index
   is the index of the current item.
-- `iterable` **Iterable** the sequence of items to call fn(item, index) with.
+* `iterable` **Iterable** the sequence of items to call fn(item, index) with.
 
 ### Examples
 
@@ -50,9 +50,9 @@ the input iterable, resulting in a single output value.
 
 ### Parameters
 
-- `fn` **[Function][1]** fn(accumulator, item) that returns the new accumulator value
-- `accumulator` **any** the initial accumulator value
-- `iterable` **Iterable** the sequence to execute fn over.
+* `fn` **[Function][1]** fn(accumulator, item) that returns the new accumulator value
+* `accumulator` **any** the initial accumulator value
+* `iterable` **Iterable** the sequence to execute fn over.
 
 ### Examples
 
@@ -69,7 +69,7 @@ Creates an  Array from the items in iterable.
 
 ### Parameters
 
-- `iterable` **Iterable** the iterable to create the array from
+* `iterable` **Iterable** the iterable to create the array from
 
 ### Examples
 

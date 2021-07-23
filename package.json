@@ -1,13 +1,12 @@
 {
   "name": "iterablefu",
   "version": "0.4.2",
-  "description": "Small (1.2kb gz), set of functions like range, map, reduce, filter, zip, for iterable objects.",
+  "description": "Small, chainable, set of functions like range, map, reduce, filter, zip, for iterable objects.",
   "keywords": [
     "iterable",
     "iterator",
     "generator",
     "chainable",
-    "esm",
     "functional",
     "transducers"
   ],
@@ -20,66 +19,65 @@
     "url": "https://github.com/toolbuilder/iterablefu.git"
   },
   "license": "MIT",
-  "main": "index.js",
-  "unpkg": "src/chainable.js",
+  "type": "module",
+  "exports": {
+    "./src/" : {
+      "require": "./cjs/",
+      "default": "./src/"
+    },
+    ".": {
+      "require": "./cjs/chainable.js",
+      "default": "./src/chainable.js"
+    }
+  },
+  "main": "cjs/chainable.js",
   "module": "src/chainable.js",
   "files": [
-    "src",
-    "index.js",
-    "umd"
+    "cjs",
+    "src"
   ],
   "scripts": {
-    "build": "run-s build:umd build:docs",
+    "build": "run-s build:cjs build:docs",
+    "build:cjs": "rollup -c rollup.config.cjs.js",
     "build:docs": "run-s build:docs:clean build:docs:generate",
     "build:docs:clean": "rimraf docs",
-    "build:docs:generate": "node -r esm scripts/docgen.js",
-    "build:umd": "run-s build:umd:clean build:umd:rollup",
-    "build:umd:clean": "rimraf umd",
-    "build:umd:rollup": "rollup -c rollup.config.js",
+    "build:docs:generate": "node scripts/docgen.js",
     "check": "run-s build check:*",
     "check:packagejson": "npmPkgJsonLint .",
-    "check:packfile": "rollup --config node:@toolbuilder/rollup-config-pkgtest",
+    "check:packfile": "rollup -c rollup.config.test.js",
     "check:src": "eslint src test",
     "check:test": "run-s test",
-    "check:umd": "run-s check:umd:clean check:umd:build check:umd:test",
-    "check:umd:build": "rollup -c rollup.browser.test.config.js",
-    "check:umd:clean": "rimraf temp",
-    "check:umd:test": "node -r esm scripts/cat.js umd/iterablefu.umd.js temp/all.umd.js | tape-run | tap-nirvana",
     "check:uncommitted": "uncommitted",
     "prerelease": "run-s check",
     "release": "standard-version",
-    "test": "tape -r esm \"test/*test.js\" | tap-nirvana"
+    "test": "esm-tape-runner \"test/**/*test.js\""
   },
   "eslintConfig": {
     "extends": "@toolbuilder/eslint-config"
   },
   "dependencies": {
-    "@toolbuilder/make-factory": "^0.1.1",
-    "esm": "^3.2.25"
+    "@toolbuilder/make-factory": "^0.1.2"
   },
   "devDependencies": {
-    "@rollup/plugin-multi-entry": "^3.0.1",
-    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@rollup/plugin-multi-entry": "^4.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.2",
+    "@small-tech/esm-tape-runner": "^1.0.3",
     "@toolbuilder/eslint-config": "^0.1.4",
     "@toolbuilder/package-json-lint-config": "^0.1.0",
-    "@toolbuilder/rollup-config-pkgtest": "^0.1.2",
-    "documentation": "^13.0.2",
-    "eslint": "^7.5.0",
-    "markedpp": "^1.0.2",
-    "multistream": "^4.0.0",
+    "@toolbuilder/rollup-plugin-test-tools": "^0.1.1",
+    "documentation": "^13.2.5",
+    "eslint": "^7.31.0",
+    "markedpp": "^1.0.3",
+    "multistream": "^4.1.0",
     "npm-package-json-lint": "^5.1.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "rollup": "^2.22.1",
-    "rollup-plugin-multi-input": "^1.1.1",
-    "rollup-plugin-relative-to-package": "^0.1.3",
-    "rollup-plugin-terser": "^6.1.0",
-    "standard-version": "^8.0.2",
+    "rollup": "^2.53.3",
+    "standard-version": "^9.3.1",
     "tap-nirvana": "^1.1.0",
-    "tape": "^5.0.1",
-    "tape-run": "^7.0.0",
+    "tape-run": "^9.0.0",
     "uncommitted": "^1.0.0",
-    "zora": "^4.0.0"
+    "zora": "^4.1.0"
   },
   "npmpackagejsonlint": {
     "extends": "@toolbuilder/package-json-lint-config"

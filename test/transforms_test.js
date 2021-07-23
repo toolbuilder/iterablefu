@@ -1,5 +1,5 @@
 import { test as tape } from 'zora'
-import { generators, transforms } from '../src/chainable'
+import { generators, transforms } from '../src/chainable.js'
 
 const isEvenNumber = x => x % 2 === 0
 

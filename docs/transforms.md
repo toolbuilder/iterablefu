@@ -44,8 +44,8 @@ If the arrays are too short, the remaining properties are assigned undefined.
 
 ### Parameters
 
-- `propertyNames` **Iterable** a sequence of property names
-- `iterable` **Iterable** a sequence of arrays (or any iterable objects)
+* `propertyNames` **Iterable** a sequence of property names
+* `iterable` **Iterable** a sequence of arrays (or any iterable objects)
 
 ### Examples
 
@@ -62,8 +62,8 @@ Chunk every n items into an array, and output that array in the output sequence.
 
 ### Parameters
 
-- `n` **[number][1]** the number of items to group into each array.
-- `iterable` **Iterable** the sequence of items to group
+* `n` **[number][1]** the number of items to group into each array.
+* `iterable` **Iterable** the sequence of items to group
 
 ### Examples
 
@@ -81,8 +81,8 @@ Would be useful for calculating time differences between timestamps.
 
 ### Parameters
 
-- `fn` **[Function][2]** fn(previous, current), yielding return value
-- `iterable` **Iterable** the input iterable
+* `fn` **[Function][2]** fn(previous, current), yielding return value
+* `iterable` **Iterable** the input iterable
 
 ### Examples
 
@@ -101,8 +101,8 @@ fn(item) returns !truthy.
 
 ### Parameters
 
-- `fn` **[Function][2]** fn(item) returns truthy when item should be removed
-- `iterable` **Iterable** the sequence to filter
+* `fn` **[Function][2]** fn(item) returns truthy when item should be removed
+* `iterable` **Iterable** the sequence to filter
 
 ### Examples
 
@@ -121,7 +121,7 @@ though they are iterable.
 
 ### Parameters
 
-- `iterable` **Iterable** the iterable sequence to flatten
+* `iterable` **Iterable** the iterable sequence to flatten
 
 ### Examples
 
@@ -139,7 +139,7 @@ Does not flatten strings even though they are iterable.
 
 ### Parameters
 
-- `iterable` **Iterable** the sequence to flatten
+* `iterable` **Iterable** the sequence to flatten
 
 ### Examples
 
@@ -157,8 +157,8 @@ Generates a sequence of items by calling fn(item) for each item.
 
 ### Parameters
 
-- `fn` **[Function][2]** fn(item) returns the output item
-- `iterable` **Iterable** the sequence to map
+* `fn` **[Function][2]** fn(item) returns the output item
+* `iterable` **Iterable** the sequence to map
 
 ### Examples
 
@@ -177,9 +177,9 @@ This method exists solely so that ChainableIterable supports chaining for an arb
 
 ### Parameters
 
-- `generatorFunction` **[Function][2]** a function that returns an iterable object, and takes an iterable as a parameter.
+* `generatorFunction` **[Function][2]** a function that returns an iterable object, and takes an iterable as a parameter.
   Typically, this will be a generator function.
-- `iterable` **Iterable** the input sequence
+* `iterable` **Iterable** the input sequence
 
 ### Examples
 
@@ -201,8 +201,8 @@ Given a sequence of Arrays, output the nth element of each array as a sequence.
 
 ### Parameters
 
-- `index` **[number][1]** the index of the Array to output
-- `iterable` **Iterable** the iterable to process
+* `index` **[number][1]** the index of the Array to output
+* `iterable` **Iterable** the iterable to process
 
 ### Examples
 
@@ -220,8 +220,8 @@ Given a sequence of Objects, output the specified property of each Object as a s
 
 ### Parameters
 
-- `propertyname` **[string][3]** the property to extract from each Object
-- `iterable` **Iterable** the input sequence of Objects
+* `propertyname` **[string][3]** the property to extract from each Object
+* `iterable` **Iterable** the input sequence of Objects
 
 ### Examples
 
@@ -239,8 +239,8 @@ Reject items when fn(item) returns truthy.
 
 ### Parameters
 
-- `fn` **[Function][2]** fn(item) returns truthy when item should be removed from output sequence
-- `iterable` **Iterable** input sequence
+* `fn` **[Function][2]** fn(item) returns truthy when item should be removed from output sequence
+* `iterable` **Iterable** input sequence
 
 ### Examples
 
@@ -258,8 +258,8 @@ Create an output sequence that is the first n items of the input sequence.
 
 ### Parameters
 
-- `n` **[number][1]** the number of items to take
-- `iterable` **Iterable** the input sequence to take items from
+* `n` **[number][1]** the number of items to take
+* `iterable` **Iterable** the input sequence to take items from
 
 ### Examples
 
@@ -276,8 +276,8 @@ Output items from the input iterable until fn(item) returns !truthy.
 
 ### Parameters
 
-- `fn` **[Function][2]** fn(item) returns truthy to put item in the output sequence
-- `iterable` **Iterable** input sequence
+* `fn` **[Function][2]** fn(item) returns truthy to put item in the output sequence
+* `iterable` **Iterable** input sequence
 
 ### Examples
 
@@ -295,8 +295,8 @@ item in the sequence.
 
 ### Parameters
 
-- `fn` **[Function][2]** `fn(item)` is called for each item in the sequence
-- `iterable` **Iterable** the input sequence
+* `fn` **[Function][2]** `fn(item)` is called for each item in the sequence
+* `iterable` **Iterable** the input sequence
 
 ### Examples
 
