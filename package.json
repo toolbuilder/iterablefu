@@ -21,9 +21,9 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./src/": {
-      "require": "./cjs/",
-      "default": "./src/"
+    "./src/*": {
+      "require": "./cjs/*",
+      "default": "./src/*"
     },
     ".": {
       "require": "./cjs/chainable.js",
