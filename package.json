@@ -1,6 +1,6 @@
 {
   "name": "iterablefu",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Small, chainable, set of functions like range, map, reduce, filter, zip, for iterable objects.",
   "keywords": [
     "iterable",

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.4](https://github.com/toolbuilder/iterablefu/compare/v0.4.3...v0.4.4) (2021-12-23)
+
+
+### Bug Fixes
+
+* resolved Node.js deprecation warning [DEP0148] Use of deprecated folder mapping ./src/ ([d871923](https://github.com/toolbuilder/iterablefu/commit/d8719233f0289b5ba438ee738bdd72fbf4951fb9))
+
 ### [0.4.3](https://github.com/toolbuilder/iterablefu/compare/v0.4.2...v0.4.3) (2021-07-23)
 
 
