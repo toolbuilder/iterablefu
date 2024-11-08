@@ -45,36 +45,31 @@
     "check": "run-s build check:*",
     "check:packagejson": "npmPkgJsonLint .",
     "check:packfile": "rollup -c rollup.config.test.js",
-    "check:src": "eslint src test",
+    "check:src": "standard src test",
     "check:test": "run-s test",
     "check:uncommitted": "uncommitted",
     "prerelease": "run-s check",
-    "release": "standard-version",
+    "release": "commit-and-tag-version",
     "test": "pta \"test/**/*test.js\""
   },
-  "eslintConfig": {
-    "extends": "@toolbuilder/eslint-config"
-  },
   "dependencies": {
-    "@toolbuilder/make-factory": "^0.1.2"
+    "@toolbuilder/make-factory": "^0.1.5"
   },
   "devDependencies": {
-    "@toolbuilder/eslint-config": "^0.1.4",
-    "@toolbuilder/package-json-lint-config": "^0.1.0",
-    "@toolbuilder/rollup-plugin-test-tools": "^0.1.1",
+    "@toolbuilder/package-json-lint-config": "^0.1.1",
+    "@toolbuilder/rollup-plugin-test-tools": "^1.1.0",
+    "commit-and-tag-version": "^12.5.0",
     "documentation": "^13.2.5",
-    "eslint": "^7.31.0",
-    "markedpp": "^1.0.3",
+    "markedpp": "^1.4.0",
     "multistream": "^4.1.0",
-    "npm-package-json-lint": "^5.1.0",
-    "npm-run-all": "^4.1.5",
-    "pta": "^1.0.2",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.53.3",
-    "standard-version": "^9.3.1",
-    "tap-nirvana": "^1.1.0",
+    "npm-package-json-lint": "^8.0.0",
+    "npm-run-all2": "^7.0.1",
+    "pta": "1.2.0",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.24.4",
+    "standard": "^17.1.2",
     "uncommitted": "^1.0.0",
-    "zora": "^5.0.3"
+    "zora": "5.0.3"
   },
   "npmpackagejsonlint": {
     "extends": "@toolbuilder/package-json-lint-config"
